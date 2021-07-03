@@ -16,7 +16,7 @@
             android:layout_marginTop="20dp"
             android:focusable="false"
             android:fontFamily="@font/lato"
-            android:paddingStart="-14dp"
+            android:paddingStart="-12dp"
             android:paddingBottom="10dp"
             android:searchIcon="@drawable/ic_baseline_search_24"
             app:defaultQueryHint="Pesquisar por um filme..."
@@ -26,39 +26,81 @@
             app:layout_constraintTop_toTopOf="parent"
             app:queryBackground="@drawable/searchview_background" />
 
+        <View
+            android:id="@+id/vLine1"
+            android:layout_width="32dp"
+            android:layout_height="4dp"
+            android:layout_marginTop="10dp"
+            android:visibility="invisible"
+            android:background="@color/green"
+            app:layout_constraintBottom_toTopOf="@id/tvAllMovies"
+            app:layout_constraintStart_toStartOf="@id/tvAllMovies"/>
+
         <TextView
             android:id="@+id/tvAllMovies"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginStart="26dp"
+            android:layout_marginTop="18dp"
             android:fontFamily="@font/lato"
             android:text="Todos os filmes"
             android:textColor="@color/gray1_30"
-            android:textSize="26sp"
+            android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/svSearchMovie" />
+        
+        <TextView
+            android:id="@+id/tvBackToBeginning"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:text="Voltar ao início"
+            android:textColor="@color/green"
+            android:fontFamily="@font/lato_bold"
+            android:visibility="invisible"
+            app:layout_constraintTop_toBottomOf="@id/tvAllMovies"
+            app:layout_constraintStart_toStartOf="@id/tvAllMovies"/>
+
+        <View
+            android:id="@+id/vLine2"
+            android:layout_width="32dp"
+            android:layout_height="4dp"
+            android:layout_marginTop="10dp"
+            android:visibility="invisible"
+            android:background="@color/green"
+            app:layout_constraintTop_toBottomOf="@id/tvAllMovies"
+            app:layout_constraintStart_toStartOf="@id/tvAllMovies"/>
 
         <TextView
             android:id="@+id/tvFavorites"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="26dp"
             android:fontFamily="@font/lato"
             android:text="Favoritos"
             android:textColor="@color/gray1_30"
-            android:textSize="26sp"
+            android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/svSearchMovie" />
+
+        <View
+            android:id="@+id/vLine3"
+            android:layout_width="32dp"
+            android:layout_height="4dp"
+            android:layout_marginTop="10dp"
+            android:visibility="invisible"
+            android:background="@color/green"
+            app:layout_constraintTop_toBottomOf="@id/tvFavorites"
+            app:layout_constraintStart_toStartOf="@id/tvFavorites"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvGenres"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="38dp"
+            android:paddingHorizontal="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvAllMovies"
@@ -70,8 +112,7 @@
             android:id="@+id/vpMovies"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:paddingStart="60dp"
-            android:paddingEnd="60dp"
+            android:paddingHorizontal="60dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
