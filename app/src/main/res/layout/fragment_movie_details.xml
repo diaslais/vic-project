@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.view.MovieDetailsFragment">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cvMovieDetailPoster"
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            android:backgroundTint="@color/transparent"
+            app:cardElevation="0dp"
+            app:cardPreventCornerOverlap="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/ivMovieDetailPoster"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media"
+                app:srcCompat="@drawable/rocky" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="265dp" />
+
+        <ImageButton
+            android:id="@+id/ibBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="26dp"
+            android:layout_marginTop="26dp"
+            android:backgroundTint="@color/transparent"
+            android:src="@drawable/ic_baseline_arrow_back_ios_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cvUserRatings"
+            style="@style/CustomCardViewStyle"
+            android:layout_width="130dp"
+            android:layout_height="70dp"
+            app:cardElevation="15dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+
+                <ImageView
+                    android:id="@+id/ivMovieDetailStar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_grade_24"
+                    app:layout_constraintBottom_toBottomOf="@id/tvComplement"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tvMovieDetailRating" />
+
+                <TextView
+                    android:id="@+id/tvMovieDetailRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="4dp"
+                    android:fontFamily="@font/lato_bold"
+                    android:text="81%"
+                    android:textColor="@color/dark_blue"
+                    app:layout_constraintStart_toEndOf="@id/ivMovieDetailStar"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvComplement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato"
+                    android:text="Avaliação \ndos usuários"
+                    android:textColor="@color/light_blue1"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="@id/tvMovieDetailRating"
+                    app:layout_constraintTop_toBottomOf="@id/tvMovieDetailRating" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/tvMovieDetailTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="26dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/lato_black"
+            android:textColor="@color/dark_blue"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/guideline"
+            tools:text="Ford vs Ferrari" />
+
+        <ImageButton
+            android:id="@+id/ibMovieDetailFavorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="26dp"
+            android:backgroundTint="@color/transparent"
+            android:padding="0dp"
+            android:src="@drawable/ic_baseline_favorite_border_24"
+            app:layout_constraintBottom_toBottomOf="@+id/tvMovieDetailYear"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvMovieDetailTitle" />
+
+        <TextView
+            android:id="@+id/tvMovieDetailYear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/light_blue1"
+            app:layout_constraintStart_toStartOf="@+id/tvMovieDetailTitle"
+            app:layout_constraintTop_toBottomOf="@id/tvMovieDetailTitle"
+            tools:text="2019" />
+
+        <TextView
+            android:id="@+id/tvMovieDetailPg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:textColor="@color/light_blue1"
+            app:layout_constraintStart_toEndOf="@+id/tvMovieDetailYear"
+            app:layout_constraintTop_toBottomOf="@id/tvMovieDetailTitle"
+            tools:text="PG-13" />
+
+        <TextView
+            android:id="@+id/tvMovieDetailRuntime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:textColor="@color/light_blue1"
+            app:layout_constraintStart_toEndOf="@+id/tvMovieDetailPg"
+            app:layout_constraintTop_toBottomOf="@id/tvMovieDetailTitle"
+            tools:text="2h 32min" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvMovieDetailGenres"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:paddingHorizontal="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvMovieDetailYear"
+            tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_genre_detail"
+            tools:orientation="horizontal" />
+
+        <LinearLayout
+            android:id="@+id/llSynopsis"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@id/llCast"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rvMovieDetailGenres">
+
+            <TextView
+                android:id="@+id/tvSyposisTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="26dp"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/lato"
+                android:text="Sinopse"
+                android:textColor="@color/dark_blue"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tvMovieDetailSynopsis"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="26dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/lato"
+                android:textColor="@color/blue"
+                tools:text="@tools:sample/lorem/random" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llCast"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/llSynopsis">
+
+            <TextView
+                android:id="@+id/tvCastTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="26dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/lato"
+                android:text="Elenco"
+                android:textColor="@color/dark_blue"
+                android:textSize="18sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvCastMembers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:paddingHorizontal="12dp"
+                tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_cast_member"
+                tools:orientation="horizontal" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
+
