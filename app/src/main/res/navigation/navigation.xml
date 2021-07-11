@@ -7,7 +7,20 @@
 
     <fragment
         android:id="@+id/mainScreenFragment"
-        android:name="com.laisd.moviesapp.presentation.view.MainScreenFragment"
+        android:name="com.laisd.moviesapp.presentation.mainscreen.MainScreenFragment"
         android:label="fragment_main_screen"
-        tools:layout="@layout/fragment_main_screen" />
+        tools:layout="@layout/fragment_main_screen" >
+        <action
+            android:id="@+id/action_mainScreenFragment_to_movieDetailsFragment"
+            app:destination="@id/movieDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/movieDetailsFragment"
+        android:name="com.laisd.moviesapp.presentation.moviedetail.MovieDetailsFragment"
+        android:label="fragment_movie_details"
+        tools:layout="@layout/fragment_movie_details" >
+        <argument
+            android:name="movieTitle"
+            app:argType="string" />
+    </fragment>
 </navigation>
