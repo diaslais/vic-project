@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.view.MainScreenFragment">
+        tools:context=".presentation.mainscreen.MainScreenFragment">
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/svSearchMovie"
