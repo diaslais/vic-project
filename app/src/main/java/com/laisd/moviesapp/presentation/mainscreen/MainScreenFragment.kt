@@ -16,7 +16,9 @@ import com.laisd.moviesapp.databinding.FragmentMainScreenBinding
 import com.laisd.moviesapp.presentation.MoviesViewModel
 
 class MainScreenFragment : Fragment() {
+    //internal null property: visible in all lifecycles of the fragment (even when view is not available)
     private var _binding: FragmentMainScreenBinding? = null
+    //non-null property: valid only between onCreateView and onDestroyView (when we expect view to be available)
     private val binding get() = _binding!!
     private lateinit var moviesViewModel: MoviesViewModel
     private var moviesAdapter = MoviesAdapter()
@@ -26,6 +28,7 @@ class MainScreenFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentMainScreenBinding.inflate(inflater, container, false)
+        //root: property available on generated viewbinding classes, gives you the whole layout
         return binding.root
     }
 
@@ -54,12 +57,17 @@ class MainScreenFragment : Fragment() {
     private fun makeMoviesViewPager(viewPager2: ViewPager2) {
         viewPager2.adapter = moviesAdapter
 
+        //ignore the padding when scrolling
         viewPager2.clipToPadding = false
         viewPager2.clipChildren = false
 
         viewPager2.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
 
+        //how many views will be kept offscreen on either side of the actual view
         viewPager2.offscreenPageLimit = 3
+
+        //set a transformer (PageTransformer) to apply custom transformations when page change occurs
+        //here> keep the space between views (margin) when user scrolls
         val compositePageTransformer = CompositePageTransformer()
         compositePageTransformer.addTransformer(MarginPageTransformer(18))
         viewPager2.setPageTransformer(compositePageTransformer)
@@ -74,6 +82,7 @@ class MainScreenFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        //we want the views to be cleaned up in memory when they're destroyed (prevent memory leaks)
         _binding = null
     }
 }
