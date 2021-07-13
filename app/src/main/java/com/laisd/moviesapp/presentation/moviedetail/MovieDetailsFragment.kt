@@ -12,14 +12,15 @@ import com.laisd.moviesapp.databinding.FragmentMovieDetailsBinding
 import com.laisd.moviesapp.presentation.MoviesViewModel
 
 class MovieDetailsFragment : Fragment() {
-    lateinit var binding: FragmentMovieDetailsBinding
+    private var _binding: FragmentMovieDetailsBinding? = null
+    private val binding get() = _binding!!
     private lateinit var moviesViewModel: MoviesViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentMovieDetailsBinding.inflate(inflater, container, false)
+        _binding = FragmentMovieDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -53,5 +54,10 @@ class MovieDetailsFragment : Fragment() {
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = layoutManager
         recyclerView.clipToPadding = false
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

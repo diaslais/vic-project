@@ -7,15 +7,15 @@ import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.laisd.moviesapp.R
-import com.laisd.moviesapp.data.model.MovieResponse
+import com.laisd.moviesapp.domain.model.Movie
 
 class MoviesAdapter() : RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
-    var movieList = emptyList<MovieResponse>()
+    var movieList = emptyList<Movie>()
 
     inner class MoviesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvTitle = itemView.findViewById<TextView>(R.id.tvMovieTitle)
 
-        fun bind(movie: MovieResponse) {
+        fun bind(movie: Movie) {
             tvTitle.text = movie.title
         }
     }
