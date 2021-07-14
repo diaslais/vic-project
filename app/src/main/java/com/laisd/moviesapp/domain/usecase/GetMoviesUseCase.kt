@@ -8,6 +8,6 @@ import io.reactivex.rxjava3.core.Single
 class GetMoviesUseCase(private val repository: MoviesRepository = MoviesRepository()) {
 
     fun execute(): Single<MoviesList> {
-        return repository.getPopularMovies(apiKey)
+        return repository.getMovies(apiKey, "pt-BR")
     }
 }

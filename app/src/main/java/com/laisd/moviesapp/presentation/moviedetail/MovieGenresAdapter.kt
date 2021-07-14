@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.laisd.moviesapp.R
 
 class MovieGenresAdapter(
-    private val genres: Array<String>
+    private val genres: List<String>
 ) : RecyclerView.Adapter<MovieGenresAdapter.MovieGenresViewHolder>() {
 
     inner class MovieGenresViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

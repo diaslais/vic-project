@@ -1,11 +1,11 @@
 package com.laisd.moviesapp.data.model
 
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import com.google.gson.annotations.SerializedName
 
-@Parcelize
-data class CastMemberResponse(
+data class CastMemberResponse (
+    val id: Int,
     val name: String,
-    val role: String,
-    val picture: Int
-) : Parcelable
+    val character: String,
+    @SerializedName("profile_path")
+    val photo: String?
+)
