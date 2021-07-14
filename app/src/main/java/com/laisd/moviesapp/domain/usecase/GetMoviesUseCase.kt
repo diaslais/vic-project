@@ -1,15 +1,13 @@
 package com.laisd.moviesapp.domain.usecase
 
 import com.laisd.moviesapp.BuildConfig.apiKey
-import com.laisd.moviesapp.data.model.PopularMoviesResponse
-import com.laisd.moviesapp.data.repository.MoviesRepositoryImpl
-import retrofit2.Call
+import com.laisd.moviesapp.data.repository.MoviesRepository
+import com.laisd.moviesapp.domain.model.MoviesList
+import io.reactivex.rxjava3.core.Single
 
-class GetMoviesUseCase() :
-    SingleUseCase<PopularMoviesResponse> {
-    private val moviesRepository = MoviesRepositoryImpl()
+class GetMoviesUseCase(private val repository: MoviesRepository = MoviesRepository()) {
 
-    override fun execute(): Call<PopularMoviesResponse> {
-        return moviesRepository.getPopularMoviesResponse(apiKey)
+    fun execute(): Single<MoviesList> {
+        return repository.getMovies(apiKey, "pt-BR")
     }
 }
