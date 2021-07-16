@@ -1,5 +1,15 @@
 <resources>
     <string name="app_name">Movies App</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="todos_os_filmes">Todos os filmes</string>
+    <string name="favoritos">Favoritos</string>
+    <string name="pesquisar">Pesquisar por um filme</string>
+    <string name="sinopse">Sinopse</string>
+    <string name="elenco">Elenco</string>
+    <string name="avaliacao">Avaliação \ndos usuários</string>
+    <string name="modo_pesquisa">Modo pesquisa</string>
+    <string name="sistema_falhou">O sistema falhou</string>
+    <string name="mensagem_falha">Por algum motivo, não foi possível processar com essa solicitação. Por favor, tente novamente.</string>
+    <string name="tentar_novamente">Tentar novamente</string>
+    <string name="filme_nao_existe">Esse filme não existe</string>
+    <string name="mensagem_nao_encontrado">Não conseguimos encontrar o filme que voce procura. Por favor, refaça sua busca.</string>
 </resources>
