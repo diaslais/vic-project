@@ -13,7 +13,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 
 class MoviesViewModel() : ViewModel() {
     private val moviesUseCase = GetMoviesUseCase()
-
     private val compositeDisposable = CompositeDisposable()
 
     init {

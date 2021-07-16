@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:layout_gravity="center">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cvMovie"
@@ -19,8 +20,8 @@
 
         <ImageView
             android:id="@+id/ivMovieImage"
-            android:layout_width="210dp"
-            android:layout_height="310dp"
+            android:layout_width="245dp"
+            android:layout_height="335dp"
             android:scaleType="centerCrop"
             tools:src="@drawable/ic_launcher_background" />
 
@@ -75,10 +76,10 @@
         android:fontFamily="@font/lato"
         android:paddingBottom="2dp"
         android:textColor="@color/dark_blue"
-        app:layout_constraintBottom_toBottomOf="@id/ivStar"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/tvMovieTitle"
         app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toEndOf="@+id/ivStar"
+        app:layout_constraintStart_toEndOf="@id/ivStar"
         tools:text="81%" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

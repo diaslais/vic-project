@@ -4,18 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.CompositePageTransformer
-import androidx.viewpager2.widget.MarginPageTransformer
-import androidx.viewpager2.widget.ViewPager2
-import com.bumptech.glide.Glide
+import androidx.navigation.findNavController
+import com.google.android.material.tabs.TabLayoutMediator
+import com.laisd.moviesapp.R
 import com.laisd.moviesapp.databinding.FragmentMainScreenBinding
 import com.laisd.moviesapp.presentation.ItemListener
 import com.laisd.moviesapp.presentation.MoviesViewModel
@@ -25,9 +19,9 @@ class MainScreenFragment : Fragment(), ItemListener {
     private var _binding: FragmentMainScreenBinding? = null
     //non-null property: valid only between onCreateView and onDestroyView (when we expect view to be available)
     private val binding get() = _binding!!
-    private lateinit var navController: NavController
     private lateinit var moviesViewModel: MoviesViewModel
-    private var moviesAdapter = MoviesAdapter(this)
+    private lateinit var viewPagerAdapter: ViewPagerAdapter
+    private lateinit var titles: List<String>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,52 +34,42 @@ class MainScreenFragment : Fragment(), ItemListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        navController = Navigation.findNavController(view)
-
         moviesViewModel = ViewModelProvider(this).get(MoviesViewModel::class.java)
+        viewPagerAdapter = ViewPagerAdapter(this, binding.vpMovies)
+        setViewPager()
+        genresRecyclerView()
+    }
 
-        val genresRecyclerView = binding.rvGenres
+    private fun setViewPager() {
+        titles = listOf(getString(R.string.todos_os_filmes), getString(R.string.favoritos))
+
+        binding.vpMovies.adapter = viewPagerAdapter
+
+        moviesViewModel.moviesList.observe(viewLifecycleOwner, Observer {
+            viewPagerAdapter.dataSet[0] = it
+            viewPagerAdapter.dataSet[1] = it
+            viewPagerAdapter.notifyDataSetChanged()
+        })
+
+        TabLayoutMediator(binding.tabLayout, binding.vpMovies) { tab, position ->
+            tab.text = titles[position]
+        }.attach()
+    }
+
+    private fun genresRecyclerView() {
+        val genresAdapter = GenresFilterAdapter()
+        binding.rvGenres.adapter = genresAdapter
         moviesViewModel.genresList.observe(viewLifecycleOwner, Observer { genresList ->
-            makeRecyclerView(genresRecyclerView)
-            genresRecyclerView.adapter =
-                GenresFilterAdapter(
-                    genresList
-                )
+            genresAdapter.genresList = genresList
         })
-
-        val moviesViewPager = binding.vpMovies
-        moviesViewModel.moviesList.observe(viewLifecycleOwner, Observer { popularMoviesList ->
-            moviesAdapter.movieList = popularMoviesList
-        })
-        makeMoviesViewPager(moviesViewPager)
-
     }
 
-    private fun makeMoviesViewPager(viewPager2: ViewPager2) {
-        viewPager2.adapter = moviesAdapter
-
-        //ignore the padding when scrolling
-        viewPager2.clipToPadding = false
-        viewPager2.clipChildren = false
-
-        viewPager2.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
-
-        //how many views will be kept offscreen on either side of the actual view
-        viewPager2.offscreenPageLimit = 3
-
-        //set a transformer (PageTransformer) to apply custom transformations when page change occurs
-        //here> keep the space between views (margin) when user scrolls
-        val compositePageTransformer = CompositePageTransformer()
-        compositePageTransformer.addTransformer(MarginPageTransformer(18))
-        viewPager2.setPageTransformer(compositePageTransformer)
-    }
-
-    private fun makeRecyclerView(recyclerView: RecyclerView) {
-        val layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        recyclerView.layoutManager = layoutManager
-        recyclerView.clipToPadding = false
+    override fun onClick(movieId: Int) {
+        view?.findNavController()?.navigate(
+            MainScreenFragmentDirections.actionMainScreenFragmentToMovieDetailsFragment(
+                movieId
+            )
+        )
     }
 
     override fun onDestroyView() {
@@ -93,9 +77,4 @@ class MainScreenFragment : Fragment(), ItemListener {
         //we want the views to be cleaned up in memory when they're destroyed (prevent memory leaks)
         _binding = null
     }
-
-    override fun onClick(movieId: Int) {
-        navController.navigate(MainScreenFragmentDirections.actionMainScreenFragmentToMovieDetailsFragment(movieId))
-    }
-
 }
