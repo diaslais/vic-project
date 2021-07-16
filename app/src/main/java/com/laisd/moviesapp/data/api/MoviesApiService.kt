@@ -11,16 +11,16 @@ interface MoviesApiService {
 
     @GET("movie/popular")
     fun getPopularMoviesResponse(
-        @Query("api_key") api_key: String,
+        @Query("api_key") apiKey: String,
         @Query("language") language: String
     ): Single<MoviesListResponse>
 
     @GET("movie/{movie_id}")
     fun getMovieDetailResponse(
-        @Path("movie_id") movie_id: String,
-        @Query("api_key") api_key: String,
+        @Path("movie_id") movieId: String,
+        @Query("api_key") apiKey: String,
         @Query("language") language: String,
-        @Query("append_to_response") append_to_response: String
+        @Query("append_to_response") appendToResponse: String
     ): Single<MovieDetailResponse>
 
 }

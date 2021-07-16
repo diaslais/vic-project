@@ -17,8 +17,7 @@
     <fragment
         android:id="@+id/movieDetailsFragment"
         android:name="com.laisd.moviesapp.presentation.moviedetail.MovieDetailsFragment"
-        android:label="fragment_movie_details"
-        tools:layout="@layout/fragment_movie_details" >
+        android:label="MovieDetailsFragment" >
         <argument
             android:name="movieId"
             app:argType="integer" />

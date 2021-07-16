@@ -18,6 +18,7 @@
             android:backgroundTint="@color/transparent"
             app:cardElevation="0dp"
             app:cardPreventCornerOverlap="false"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -46,6 +47,7 @@
             android:layout_marginStart="26dp"
             android:layout_marginTop="26dp"
             android:backgroundTint="@color/transparent"
+            android:paddingHorizontal="0dp"
             android:src="@drawable/ic_baseline_arrow_back_ios_24"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -56,7 +58,7 @@
             android:layout_width="130dp"
             android:layout_height="70dp"
             app:cardElevation="15dp"
-            app:layout_constraintBottom_toTopOf="@+id/guideline"
+            app:layout_constraintBottom_toTopOf="@id/guideline"
             app:layout_constraintEnd_toEndOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -80,17 +82,17 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginBottom="4dp"
                     android:fontFamily="@font/lato_bold"
-                    android:text="81%"
                     android:textColor="@color/dark_blue"
                     app:layout_constraintStart_toEndOf="@id/ivMovieDetailStar"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="81%" />
 
                 <TextView
                     android:id="@+id/tvComplement"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato"
-                    android:text="Avaliação \ndos usuários"
+                    android:text="@string/avaliacao"
                     android:textColor="@color/light_blue1"
                     android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="@id/tvMovieDetailRating"
@@ -109,8 +111,9 @@
             android:fontFamily="@font/lato_black"
             android:textColor="@color/dark_blue"
             android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@id/tvMovieDetailYear"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/guideline"
+            app:layout_constraintTop_toBottomOf="@id/guideline"
             tools:text="Ford vs Ferrari" />
 
         <ImageButton
@@ -122,7 +125,7 @@
             android:backgroundTint="@color/transparent"
             android:padding="0dp"
             android:src="@drawable/ic_baseline_favorite_border_24"
-            app:layout_constraintBottom_toBottomOf="@+id/tvMovieDetailYear"
+            app:layout_constraintBottom_toBottomOf="@id/tvMovieDetailYear"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tvMovieDetailTitle" />
 
@@ -131,7 +134,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/light_blue1"
-            app:layout_constraintStart_toStartOf="@+id/tvMovieDetailTitle"
+            app:layout_constraintBottom_toTopOf="@id/rvMovieDetailGenres"
+            app:layout_constraintEnd_toStartOf="@id/tvMovieDetailPg"
+            app:layout_constraintStart_toStartOf="@id/tvMovieDetailTitle"
             app:layout_constraintTop_toBottomOf="@id/tvMovieDetailTitle"
             tools:text="2019" />
 
@@ -141,7 +146,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="14dp"
             android:textColor="@color/light_blue1"
-            app:layout_constraintStart_toEndOf="@+id/tvMovieDetailYear"
+            app:layout_constraintBottom_toBottomOf="@id/tvMovieDetailYear"
+            app:layout_constraintEnd_toStartOf="@id/tvMovieDetailRuntime"
+            app:layout_constraintStart_toEndOf="@id/tvMovieDetailYear"
             app:layout_constraintTop_toBottomOf="@id/tvMovieDetailTitle"
             tools:text="PG-13" />
 
@@ -151,7 +158,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="14dp"
             android:textColor="@color/light_blue1"
-            app:layout_constraintStart_toEndOf="@+id/tvMovieDetailPg"
+            app:layout_constraintBottom_toBottomOf="@id/tvMovieDetailYear"
+            app:layout_constraintStart_toEndOf="@id/tvMovieDetailPg"
             app:layout_constraintTop_toBottomOf="@id/tvMovieDetailTitle"
             tools:text="2h 32min" />
 
@@ -160,76 +168,70 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:orientation="horizontal"
             android:paddingHorizontal="12dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvMovieDetailYear"
-            tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_genre_detail"
-            tools:orientation="horizontal" />
+            tools:listitem="@layout/item_genre_detail" />
 
-        <LinearLayout
-            android:id="@+id/llSynopsis"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tvSyposisTitle"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@id/llCast"
+            android:layout_marginStart="26dp"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/lato"
+            android:text="@string/sinopse"
+            android:textColor="@color/dark_blue"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@id/tvMovieDetailSynopsis"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rvMovieDetailGenres">
+            app:layout_constraintTop_toBottomOf="@id/rvMovieDetailGenres" />
 
-            <TextView
-                android:id="@+id/tvSyposisTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="26dp"
-                android:layout_marginTop="12dp"
-                android:fontFamily="@font/lato"
-                android:text="Sinopse"
-                android:textColor="@color/dark_blue"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/tvMovieDetailSynopsis"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="26dp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/lato"
-                android:textColor="@color/blue"
-                tools:text="@tools:sample/lorem/random" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/llCast"
+        <TextView
+            android:id="@+id/tvMovieDetailSynopsis"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_marginHorizontal="26dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/lato"
+            android:textColor="@color/blue"
+            app:layout_constraintBottom_toTopOf="@id/tvCastTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvSyposisTitle"
+            tools:text="@tools:sample/lorem/random" />
+
+        <TextView
+            android:id="@+id/tvCastTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="26dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/lato"
+            android:text="@string/elenco"
+            android:textColor="@color/dark_blue"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@id/rvCastMembers"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvMovieDetailSynopsis" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvCastMembers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:orientation="horizontal"
+            android:paddingHorizontal="12dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/llSynopsis">
-
-            <TextView
-                android:id="@+id/tvCastTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="26dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="8dp"
-                android:fontFamily="@font/lato"
-                android:text="Elenco"
-                android:textColor="@color/dark_blue"
-                android:textSize="18sp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvCastMembers"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:paddingHorizontal="12dp"
-                tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_cast_member"
-                tools:orientation="horizontal" />
-
-        </LinearLayout>
+            app:layout_constraintTop_toBottomOf="@id/tvCastTitle"
+            tools:listitem="@layout/item_cast_member" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

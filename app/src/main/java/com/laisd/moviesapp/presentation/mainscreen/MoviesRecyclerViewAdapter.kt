@@ -5,14 +5,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.laisd.moviesapp.R
 import com.laisd.moviesapp.domain.model.Movie
 import com.laisd.moviesapp.presentation.ItemListener
 
-class MoviesAdapter(private val clickListener: ItemListener) : RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
+class MoviesRecyclerViewAdapter(private val clickListener: ItemListener) :
+    RecyclerView.Adapter<MoviesRecyclerViewAdapter.MoviesViewHolder>() {
     var movieList = emptyList<Movie>()
 
     inner class MoviesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -24,7 +24,7 @@ class MoviesAdapter(private val clickListener: ItemListener) : RecyclerView.Adap
         val tvRating = itemView.findViewById<TextView>(R.id.tvRating)
 
         fun bind(movie: Movie) {
-            var pictureUrl:String? = null
+            var pictureUrl: String? = null
             movie.poster?.let {
                 pictureUrl = imageBaseUrl + it
             }

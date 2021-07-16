@@ -7,11 +7,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.laisd.moviesapp.R
 
-class GenresFilterAdapter(
-    private val genresList: List<String>
-) : RecyclerView.Adapter<GenresFilterAdapter.GenresFilter>() {
+class GenresFilterAdapter() : RecyclerView.Adapter<GenresFilterAdapter.GenresFilterViewHolder>() {
+    var genresList = listOf<String>()
 
-    inner class GenresFilter(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class GenresFilterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvGenre = itemView.findViewById<TextView>(R.id.tvMovieGenre)
 
         fun bind(genre: String) {
@@ -19,18 +18,18 @@ class GenresFilterAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenresFilter {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenresFilterViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(
             R.layout.item_genre, parent, false
         )
-        return GenresFilter(view)
+        return GenresFilterViewHolder(view)
     }
 
     override fun getItemCount(): Int {
         return genresList.size
     }
 
-    override fun onBindViewHolder(holder: GenresFilter, position: Int) {
+    override fun onBindViewHolder(holder: GenresFilterViewHolder, position: Int) {
         holder.bind(genresList[position])
     }
 }
