@@ -26,8 +26,13 @@ class ViewPagerAdapter(val clickListener: ItemListener, val viewpager: ViewPager
 
         fun handleNestedScroll() {
             recyclerview.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
+                //will be used to store the user's initial touch position
                 var initialTouchPosition = 0
+
+                //Silently observe and/or take over touch events sent to the RecyclerView before they are
+                // handled by either the RecyclerView itself or its child views.
                 override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
+                    //param e: MotionEvent describing the touch event. All coordinates are in the RecyclerView's coordinate system.
                     when (e.action) {
                         MotionEvent.ACTION_DOWN -> initialTouchPosition = e.x.toInt()
                         MotionEvent.ACTION_MOVE -> {
@@ -47,8 +52,10 @@ class ViewPagerAdapter(val clickListener: ItemListener, val viewpager: ViewPager
                             viewpager.isUserInputEnabled = true
                         }
                     }
+                    //false to continue with the current behavior
                     return false
                 }
+
                 override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
                 override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
             })
