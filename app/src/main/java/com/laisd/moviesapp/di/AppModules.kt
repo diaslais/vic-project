@@ -1,7 +1,10 @@
 package com.laisd.moviesapp.di
 
-import com.laisd.moviesapp.data.repository.MoviesRepositoryImpl
-import com.laisd.moviesapp.domain.repository.MoviesRepository
+import com.laisd.moviesapp.data.MovieMapper
+import com.laisd.moviesapp.data.repository.MovieDetailRepositoryImpl
+import com.laisd.moviesapp.data.repository.MovieRepositoryImpl
+import com.laisd.moviesapp.domain.repository.MovieDetailRepository
+import com.laisd.moviesapp.domain.repository.MovieRepository
 import com.laisd.moviesapp.domain.usecase.GetMovieDetailUseCase
 import com.laisd.moviesapp.domain.usecase.GetMoviesUseCase
 import com.laisd.moviesapp.presentation.MoviesViewModel
@@ -13,10 +16,12 @@ val presentationModules = module {
 }
 
 val domainModules = module {
-    factory { GetMoviesUseCase(moviesRepository = get()) }
-    factory { GetMovieDetailUseCase(moviesRepository = get()) }
+    factory { GetMoviesUseCase(movieRepository = get()) }
+    factory { GetMovieDetailUseCase(movieDetailRepository = get()) }
 }
 
 val dataModules = module {
-    factory<MoviesRepository> { MoviesRepositoryImpl() }
+    factory<MovieRepository> { MovieRepositoryImpl(movieMapper = get()) }
+    factory<MovieDetailRepository> { MovieDetailRepositoryImpl(movieMapper = get()) }
+    factory { MovieMapper() }
 }

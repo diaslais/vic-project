@@ -13,10 +13,8 @@ import io.reactivex.rxjava3.core.Single
  * That way we decouple our code from the lower level implementations
  * **/
 
-interface MoviesRepository {
+interface MovieRepository {
 
     fun getMovies(apiKey: String, language: String): Single<MoviesList>
-
-    fun getMovieDetail(movieId: Int, apiKey: String, language: String, appendToResponse: String): Single<MovieDetail>
 
 }
