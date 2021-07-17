@@ -1,4 +1,4 @@
-package com.laisd.moviesapp.presentation.mainscreen
+package com.laisd.moviesapp.presentation.mainscreen.adapters
 
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -19,7 +19,10 @@ class ViewPagerAdapter(val clickListener: ItemListener, val viewpager: ViewPager
         val recyclerview = itemView.findViewById<RecyclerView>(R.id.rvMovies)
 
         fun bind(list: List<Movie>) {
-            val recyclerAdapter = MoviesRecyclerViewAdapter(clickListener)
+            val recyclerAdapter =
+                MoviesRecyclerViewAdapter(
+                    clickListener
+                )
             recyclerview.adapter = recyclerAdapter
             recyclerAdapter.movieList = list
         }

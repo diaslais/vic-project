@@ -1,4 +1,4 @@
-package com.laisd.moviesapp.presentation.mainscreen
+package com.laisd.moviesapp.presentation.mainscreen.adapters
 
 import android.view.LayoutInflater
 import android.view.View

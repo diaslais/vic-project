@@ -1,4 +1,4 @@
-package com.laisd.moviesapp.presentation.moviedetail
+package com.laisd.moviesapp.presentation.moviedetail.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.laisd.moviesapp.R
-import com.laisd.moviesapp.data.model.CastMemberResponse
 import com.laisd.moviesapp.domain.model.CastMember
 
 class CastMembersAdapter(
