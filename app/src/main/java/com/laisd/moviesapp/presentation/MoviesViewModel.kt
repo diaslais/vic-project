@@ -11,8 +11,10 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
-class MoviesViewModel() : ViewModel() {
-    private val moviesUseCase = GetMoviesUseCase()
+class MoviesViewModel(
+    private val moviesUseCase: GetMoviesUseCase,
+    private val movieDetailUseCase: GetMovieDetailUseCase
+) : ViewModel() {
     private val compositeDisposable = CompositeDisposable()
 
     init {
@@ -39,8 +41,7 @@ class MoviesViewModel() : ViewModel() {
         get() = _movieDetail
 
     fun getMovieDetails(movieId: Int): LiveData<MovieDetail> {
-        val movieDetailUseCase = GetMovieDetailUseCase(movieId)
-
+        movieDetailUseCase.movieId = movieId
         movieDetailUseCase.execute()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

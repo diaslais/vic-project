@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -15,11 +14,15 @@ import com.laisd.moviesapp.R
 import com.laisd.moviesapp.databinding.FragmentMovieDetailsBinding
 import com.laisd.moviesapp.domain.model.MovieDetail
 import com.laisd.moviesapp.presentation.MoviesViewModel
+import com.laisd.moviesapp.presentation.moviedetail.adapters.CastMembersAdapter
+import com.laisd.moviesapp.presentation.moviedetail.adapters.MovieGenresAdapter
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MovieDetailsFragment : Fragment() {
     private var _binding: FragmentMovieDetailsBinding? = null
     private val binding get() = _binding!!
-    private lateinit var moviesViewModel: MoviesViewModel
+    private val moviesViewModel by viewModel<MoviesViewModel>()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,12 +35,7 @@ class MovieDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        moviesViewModel = ViewModelProvider(this).get(MoviesViewModel::class.java)
-
-        val args =
-            MovieDetailsFragmentArgs.fromBundle(
-                requireArguments()
-            )
+        val args = MovieDetailsFragmentArgs.fromBundle(requireArguments())
 
         moviesViewModel.getMovieDetails(args.movieId).observe(viewLifecycleOwner, Observer {
             setMovieInfo(it)
@@ -45,14 +43,20 @@ class MovieDetailsFragment : Fragment() {
 
         val genresRecyclerView = binding.rvMovieDetailGenres
         makeRecyclerView(genresRecyclerView)
-        moviesViewModel.genresList.observe(viewLifecycleOwner, Observer{
-            genresRecyclerView.adapter = MovieGenresAdapter(it)
+        moviesViewModel.genresList.observe(viewLifecycleOwner, Observer {
+            genresRecyclerView.adapter =
+                MovieGenresAdapter(
+                    it
+                )
         })
 
         val castRecyclerView = binding.rvCastMembers
         makeRecyclerView(castRecyclerView)
         moviesViewModel.movieDetail.observe(viewLifecycleOwner, Observer {
-            castRecyclerView.adapter = CastMembersAdapter(it.cast)
+            castRecyclerView.adapter =
+                CastMembersAdapter(
+                    it.cast
+                )
         })
     }
 
@@ -66,12 +70,12 @@ class MovieDetailsFragment : Fragment() {
         binding.tvMovieDetailRuntime.text = movieDetail.runtime.toString()
         binding.tvMovieDetailSynopsis.text = movieDetail.synopsis
 
-        var pictureUrl:String? = null
+        var pictureUrl: String? = null
         movieDetail.backdropPoster?.let {
             pictureUrl = imageBaseUrl + it
         }
 
-        loadImage(pictureUrl , binding.ivMovieDetailPoster)
+        loadImage(pictureUrl, binding.ivMovieDetailPoster)
     }
 
     private fun loadImage(url: String?, imageView: ImageView) {

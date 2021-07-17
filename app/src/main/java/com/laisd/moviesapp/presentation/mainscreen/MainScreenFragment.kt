@@ -6,20 +6,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.laisd.moviesapp.R
 import com.laisd.moviesapp.databinding.FragmentMainScreenBinding
 import com.laisd.moviesapp.presentation.ItemListener
 import com.laisd.moviesapp.presentation.MoviesViewModel
+import com.laisd.moviesapp.presentation.mainscreen.adapters.GenresFilterAdapter
+import com.laisd.moviesapp.presentation.mainscreen.adapters.ViewPagerAdapter
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainScreenFragment : Fragment(), ItemListener {
     //internal null property: visible in all lifecycles of the fragment (even when view is not available)
     private var _binding: FragmentMainScreenBinding? = null
     //non-null property: valid only between onCreateView and onDestroyView (when we expect view to be available)
     private val binding get() = _binding!!
-    private lateinit var moviesViewModel: MoviesViewModel
+    private val moviesViewModel by viewModel<MoviesViewModel>()
     private lateinit var viewPagerAdapter: ViewPagerAdapter
     private lateinit var titles: List<String>
 
@@ -34,7 +36,7 @@ class MainScreenFragment : Fragment(), ItemListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        moviesViewModel = ViewModelProvider(this).get(MoviesViewModel::class.java)
+
         viewPagerAdapter = ViewPagerAdapter(this, binding.vpMovies)
         setViewPager()
         genresRecyclerView()
@@ -57,7 +59,8 @@ class MainScreenFragment : Fragment(), ItemListener {
     }
 
     private fun genresRecyclerView() {
-        val genresAdapter = GenresFilterAdapter()
+        val genresAdapter =
+            GenresFilterAdapter()
         binding.rvGenres.adapter = genresAdapter
         moviesViewModel.genresList.observe(viewLifecycleOwner, Observer { genresList ->
             genresAdapter.genresList = genresList
