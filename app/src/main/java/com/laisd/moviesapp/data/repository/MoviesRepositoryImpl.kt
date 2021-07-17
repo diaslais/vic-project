@@ -7,6 +7,11 @@ import com.laisd.moviesapp.domain.model.MoviesList
 import com.laisd.moviesapp.domain.repository.MoviesRepository
 import io.reactivex.rxjava3.core.Single
 
+/**
+ * This repository is responsible for fetching
+ * data from server or db
+ * **/
+
 class MoviesRepositoryImpl() : MoviesRepository {
     private val apiService = Network.createMoviesApiService()
     private val movieMapper = MovieMapper()
