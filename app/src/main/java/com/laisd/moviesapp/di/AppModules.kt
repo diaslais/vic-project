@@ -7,12 +7,14 @@ import com.laisd.moviesapp.domain.repository.MovieDetailRepository
 import com.laisd.moviesapp.domain.repository.MovieRepository
 import com.laisd.moviesapp.domain.usecase.GetMovieDetailUseCase
 import com.laisd.moviesapp.domain.usecase.GetMoviesUseCase
+import com.laisd.moviesapp.presentation.MovieDetailsViewModel
 import com.laisd.moviesapp.presentation.MoviesViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val presentationModules = module {
-    viewModel { MoviesViewModel(moviesUseCase = get(), movieDetailUseCase = get()) }
+    viewModel { MoviesViewModel(moviesUseCase = get()) }
+    viewModel { MovieDetailsViewModel(movieDetailUseCase = get()) }
 }
 
 val domainModules = module {

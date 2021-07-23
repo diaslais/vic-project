@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide
 import com.laisd.moviesapp.R
 import com.laisd.moviesapp.databinding.FragmentMovieDetailsBinding
 import com.laisd.moviesapp.domain.model.MovieDetail
-import com.laisd.moviesapp.presentation.MoviesViewModel
+import com.laisd.moviesapp.presentation.MovieDetailsViewModel
 import com.laisd.moviesapp.presentation.moviedetail.adapters.CastMembersAdapter
 import com.laisd.moviesapp.presentation.moviedetail.adapters.MovieGenresAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -21,8 +21,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class MovieDetailsFragment : Fragment() {
     private var _binding: FragmentMovieDetailsBinding? = null
     private val binding get() = _binding!!
-    private val moviesViewModel by viewModel<MoviesViewModel>()
-
+    private val movieDetailViewModel by viewModel<MovieDetailsViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,26 +36,22 @@ class MovieDetailsFragment : Fragment() {
 
         val args = MovieDetailsFragmentArgs.fromBundle(requireArguments())
 
-        moviesViewModel.getMovieDetails(args.movieId).observe(viewLifecycleOwner, Observer {
+        movieDetailViewModel.getMovieDetails(args.movieId).observe(viewLifecycleOwner, Observer {
             setMovieInfo(it)
         })
 
         val genresRecyclerView = binding.rvMovieDetailGenres
         makeRecyclerView(genresRecyclerView)
-        moviesViewModel.genresList.observe(viewLifecycleOwner, Observer {
+        movieDetailViewModel.genresList.observe(viewLifecycleOwner, Observer {
             genresRecyclerView.adapter =
-                MovieGenresAdapter(
-                    it
-                )
+                MovieGenresAdapter(it)
         })
 
         val castRecyclerView = binding.rvCastMembers
         makeRecyclerView(castRecyclerView)
-        moviesViewModel.movieDetail.observe(viewLifecycleOwner, Observer {
+        movieDetailViewModel.movieDetail.observe(viewLifecycleOwner, Observer {
             castRecyclerView.adapter =
-                CastMembersAdapter(
-                    it.cast
-                )
+                CastMembersAdapter(it.cast)
         })
     }
 
@@ -71,9 +66,7 @@ class MovieDetailsFragment : Fragment() {
         binding.tvMovieDetailSynopsis.text = movieDetail.synopsis
 
         var pictureUrl: String? = null
-        movieDetail.backdropPoster?.let {
-            pictureUrl = imageBaseUrl + it
-        }
+        movieDetail.backdropPoster?.let {pictureUrl = imageBaseUrl + it}
 
         loadImage(pictureUrl, binding.ivMovieDetailPoster)
     }

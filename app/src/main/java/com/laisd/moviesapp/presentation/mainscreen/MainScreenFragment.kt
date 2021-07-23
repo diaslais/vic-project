@@ -66,9 +66,7 @@ class MainScreenFragment : Fragment(), ItemListener {
 
     override fun onClick(movieId: Int) {
         view?.findNavController()?.navigate(
-            MainScreenFragmentDirections.actionMainScreenFragmentToMovieDetailsFragment(
-                movieId
-            )
+            MainScreenFragmentDirections.actionMainScreenFragmentToMovieDetailsFragment(movieId)
         )
     }
 

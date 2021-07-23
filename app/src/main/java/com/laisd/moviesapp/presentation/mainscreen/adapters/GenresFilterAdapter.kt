@@ -11,7 +11,7 @@ class GenresFilterAdapter() : RecyclerView.Adapter<GenresFilterAdapter.GenresFil
     var genresList = listOf<String>()
 
     inner class GenresFilterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvGenre = itemView.findViewById<TextView>(R.id.tvMovieGenre)
+        val tvGenre = itemView.findViewById<TextView>(R.id.btnMovieGenre)
 
         fun bind(genre: String) {
             tvGenre.text = genre
