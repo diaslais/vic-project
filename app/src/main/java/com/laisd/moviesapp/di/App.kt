@@ -9,6 +9,8 @@ class App : Application() {
         super.onCreate()
         startKoin {
             androidContext(this@App)
+            modules(networkModules)
+            modules(dataBaseModules)
             modules(dataModules)
             modules(domainModules)
             modules(presentationModules)

@@ -1,29 +1,77 @@
 package com.laisd.moviesapp.di
 
-import com.laisd.moviesapp.data.MovieMapper
-import com.laisd.moviesapp.data.repository.MovieDetailRepositoryImpl
+import androidx.room.Room
+import com.google.gson.GsonBuilder
+import com.laisd.moviesapp.data.api.MovieDetailService
+import com.laisd.moviesapp.data.api.MoviesService
+import com.laisd.moviesapp.data.datasource.local.LocalDataSource
+import com.laisd.moviesapp.data.datasource.local.LocalDataSourceImpl
+import com.laisd.moviesapp.data.datasource.remote.RemoteDataSource
+import com.laisd.moviesapp.data.datasource.remote.RemoteDataSourceImpl
+import com.laisd.moviesapp.data.db.MovieDataBase
+import com.laisd.moviesapp.data.mapper.FavoriteMapper
+import com.laisd.moviesapp.data.mapper.MovieMapper
+import com.laisd.moviesapp.data.repository.FavoritesRepositoryImpl
 import com.laisd.moviesapp.data.repository.MovieRepositoryImpl
-import com.laisd.moviesapp.domain.repository.MovieDetailRepository
+import com.laisd.moviesapp.domain.repository.FavoritesRepository
 import com.laisd.moviesapp.domain.repository.MovieRepository
-import com.laisd.moviesapp.domain.usecase.GetMovieDetailUseCase
-import com.laisd.moviesapp.domain.usecase.GetMoviesUseCase
-import com.laisd.moviesapp.presentation.MovieDetailsViewModel
-import com.laisd.moviesapp.presentation.MoviesViewModel
+import com.laisd.moviesapp.domain.usecase.*
+import com.laisd.moviesapp.presentation.SharedViewModel
+import okhttp3.OkHttpClient
+import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 
 val presentationModules = module {
-    viewModel { MoviesViewModel(moviesUseCase = get()) }
-    viewModel { MovieDetailsViewModel(movieDetailUseCase = get()) }
+    viewModel {
+        SharedViewModel(
+            getMoviesUseCase = get(),
+            getMovieDetailUseCase = get(),
+            getFavoritesUseCase = get(),
+            getFavoriteDetailUseCase = get(),
+            addFavoriteUseCase = get(),
+            deleteFavoriteUseCase = get()
+        )
+    }
 }
 
 val domainModules = module {
     factory { GetMoviesUseCase(movieRepository = get()) }
-    factory { GetMovieDetailUseCase(movieDetailRepository = get()) }
+    factory { GetMovieDetailUseCase(movieRepository = get()) }
+    factory { GetFavoritesUseCase(favoritesRepository = get()) }
+    factory { GetFavoriteDetailUseCase(favoritesRepository = get()) }
+    factory { AddFavoriteUseCase(favoritesRepository = get()) }
+    factory { DeleteFavoriteUseCase(favoritesRepository = get()) }
 }
 
 val dataModules = module {
-    factory<MovieRepository> { MovieRepositoryImpl(movieMapper = get()) }
-    factory<MovieDetailRepository> { MovieDetailRepositoryImpl(movieMapper = get()) }
+    factory<MovieRepository> { MovieRepositoryImpl(movieMapper = get(), remoteDataSource = get()) }
+    factory<FavoritesRepository> { FavoritesRepositoryImpl(localDataSource = get(), favoriteMapper = get()) }
+    factory { FavoriteMapper() }
     factory { MovieMapper() }
+    factory<LocalDataSource> { LocalDataSourceImpl(movieDao = get()) }
+    factory<RemoteDataSource> { RemoteDataSourceImpl(movieDetailService = get(), moviesService = get()) }
+}
+
+val dataBaseModules = module {
+    single { Room.databaseBuilder(androidApplication(), MovieDataBase::class.java, "moviesdatabase").build() }
+    single { get<MovieDataBase>().movieDao() }
+}
+
+val networkModules = module {
+    factory { get<Retrofit>().create(MoviesService::class.java) }
+    factory { get<Retrofit>().create(MovieDetailService::class.java) }
+    single {
+        Retrofit.Builder()
+            .baseUrl("https://api.themoviedb.org/3/") //colocar no build config
+            .client(get())
+            .addConverterFactory(GsonConverterFactory.create(get()))
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+            .build()
+    }
+    single { GsonBuilder().create() }
+    single { OkHttpClient.Builder().build() }
 }
