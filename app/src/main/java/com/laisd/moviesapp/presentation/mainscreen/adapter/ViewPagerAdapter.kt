@@ -1,4 +1,4 @@
-package com.laisd.moviesapp.presentation.mainscreen.adapters
+package com.laisd.moviesapp.presentation.mainscreen.adapter
 
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -10,7 +10,12 @@ import androidx.viewpager2.widget.ViewPager2
 import com.laisd.moviesapp.R
 import com.laisd.moviesapp.domain.model.Movie
 
-class ViewPagerAdapter(val viewpager: ViewPager2, val clickListener: (movieId: Int) -> Unit) :
+class ViewPagerAdapter(
+    val viewpager: ViewPager2,
+    private val isFavorite: (movieId: Int) -> Boolean,
+    val favoriteListener: (movie: Movie) -> Unit,
+    val itemClickListener: (movieId: Int) -> Unit
+) :
     RecyclerView.Adapter<ViewPagerAdapter.ViewPagerViewHolder>() {
     var dataSet: MutableList<List<Movie>> = mutableListOf(listOf(), listOf())
 
@@ -18,7 +23,7 @@ class ViewPagerAdapter(val viewpager: ViewPager2, val clickListener: (movieId: I
         val recyclerView = itemView.findViewById<RecyclerView>(R.id.rvMovies)
 
         fun bind(list: List<Movie>) {
-            val recyclerAdapter = MoviesRecyclerViewAdapter(clickListener)
+            val recyclerAdapter = MoviesRecyclerViewAdapter(isFavorite, favoriteListener, itemClickListener)
             recyclerView.adapter = recyclerAdapter
             recyclerAdapter.movieList = list
         }
