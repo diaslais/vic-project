@@ -1,4 +1,4 @@
-package com.laisd.moviesapp.data
+package com.laisd.moviesapp.data.mapper
 
 import com.laisd.moviesapp.data.model.CastMemberResponse
 import com.laisd.moviesapp.data.model.MovieDetailResponse
@@ -9,18 +9,31 @@ import com.laisd.moviesapp.domain.model.MovieDetail
 
 class MovieMapper {
 
-    fun toMovies(moviesListResponse: MoviesListResponse): List<Movie> {
-        return moviesListResponse.popularMovies.map {
+    fun toMovie(moviesListResponse: MoviesListResponse): List<Movie> =
+        moviesListResponse.popularMovies.map { movieResponse ->
             Movie(
-                it.id,
-                it.poster,
-                it.title,
-                it.userRating
+                movieResponse.id,
+                movieResponse.poster,
+                movieResponse.title,
+                movieResponse.userRating
             )
         }
-    }
 
-    fun toMovieDetail(movieDetailResponse: MovieDetailResponse): MovieDetail {
+    fun toMovieDetail(movieDetailResponse: MovieDetailResponse): MovieDetail =
+        MovieDetail(
+            movieDetailResponse.id,
+            movieDetailResponse.backdropPoster,
+            movieDetailResponse.title,
+            movieDetailResponse.userRating,
+            movieDetailResponse.releaseDate,
+            getFilmCertification(movieDetailResponse),
+            movieDetailResponse.runtime,
+            getGenresList(movieDetailResponse),
+            movieDetailResponse.synopsis,
+            getCast(movieDetailResponse)
+        )
+
+    private fun getFilmCertification(movieDetailResponse: MovieDetailResponse): String {
         val releasesResponseList = movieDetailResponse.releases.countries
         var filmCertification = ""
         releasesResponseList.forEach {
@@ -28,36 +41,28 @@ class MovieMapper {
                 filmCertification = it.certification
             }
         }
+        return filmCertification
+    }
 
+    private fun getGenresList(movieDetailResponse: MovieDetailResponse): List<String> {
         val genres = arrayListOf<String>()
         movieDetailResponse.genres.forEach {
             genres.add(it.name)
         }
-
-        val castMemberResponseList = movieDetailResponse.credits.cast
-        val cast = castMemberResponseList.map { castMemberResponse ->
-            toCastMember(castMemberResponse)
-        }
-
-        return MovieDetail(
-            movieDetailResponse.id,
-            movieDetailResponse.backdropPoster,
-            movieDetailResponse.title,
-            movieDetailResponse.userRating,
-            movieDetailResponse.releaseDate,
-            filmCertification,
-            movieDetailResponse.runtime,
-            genres,
-            movieDetailResponse.synopsis,
-            cast
-        )
+        return genres
     }
 
-    fun toCastMember(castMemberResponse: CastMemberResponse): CastMember {
-        return CastMember(
+    private fun getCast(movieDetailResponse: MovieDetailResponse): List<CastMember> {
+        val castMemberResponseList = movieDetailResponse.credits.cast
+        return castMemberResponseList.map { castMemberResponse ->
+            toCastMember(castMemberResponse)
+        }
+    }
+
+    private fun toCastMember(castMemberResponse: CastMemberResponse): CastMember =
+        CastMember(
             castMemberResponse.name,
             castMemberResponse.character,
             castMemberResponse.photo
         )
-    }
 }
