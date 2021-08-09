@@ -1,4 +1,4 @@
-package com.laisd.moviesapp.presentation.moviedetails.adapters
+package com.laisd.moviesapp.presentation.moviedetails.adapter
 
 import android.view.LayoutInflater
 import android.view.View
