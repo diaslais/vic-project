@@ -15,6 +15,12 @@ buildscript {
         rxandroid_version = "3.0.0"
         glide_version = "4.12.0"
         koin_version = "3.1.2"
+        junit_version = "4.13.2"
+        okhttp_version = "4.9.0"
+        mockito_kotlin_version = "2.1.0"
+        assertj_version = "3.11.1"
+        android_arch_test = "2.1.0"
+        room_version = "2.3.0"
     }
 
     repositories {
