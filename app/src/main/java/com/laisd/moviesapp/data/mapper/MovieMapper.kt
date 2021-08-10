@@ -1,9 +1,11 @@
 package com.laisd.moviesapp.data.mapper
 
 import com.laisd.moviesapp.data.model.CastMemberResponse
+import com.laisd.moviesapp.data.model.GenreListResponse
 import com.laisd.moviesapp.data.model.MovieDetailResponse
 import com.laisd.moviesapp.data.model.MoviesListResponse
 import com.laisd.moviesapp.domain.model.CastMember
+import com.laisd.moviesapp.domain.model.Genre
 import com.laisd.moviesapp.domain.model.Movie
 import com.laisd.moviesapp.domain.model.MovieDetail
 
@@ -65,4 +67,9 @@ class MovieMapper {
             castMemberResponse.character,
             castMemberResponse.photo
         )
+
+    fun toGenreList(genreListResponse: GenreListResponse): List<Genre> =
+        genreListResponse.genres.map { genreResponse ->
+            Genre(genreResponse.id, genreResponse.name)
+        }
 }

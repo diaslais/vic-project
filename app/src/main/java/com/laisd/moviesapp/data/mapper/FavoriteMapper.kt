@@ -30,7 +30,7 @@ class FavoriteMapper {
                 movieEntity.runtime,
                 movieEntity.genres,
                 movieEntity.synopsis,
-                arrayListOf<CastMember>()
+                movieEntity.cast
             )
         }
 
@@ -45,7 +45,7 @@ class FavoriteMapper {
             movieEntity.runtime,
             movieEntity.genres,
             movieEntity.synopsis,
-            arrayListOf()
+            movieEntity.cast
         )
 
     fun mapToEntity(movie: Movie, movieDetail: MovieDetail): MovieEntity =
@@ -59,6 +59,7 @@ class FavoriteMapper {
             movieDetail.filmCertification,
             movieDetail.runtime,
             movieDetail.genres,
-            movieDetail.synopsis
+            movieDetail.synopsis,
+            movieDetail.cast
         )
 }

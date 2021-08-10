@@ -16,6 +16,7 @@ data class MovieEntity(
     @ColumnInfo val filmCertification: String,
     @ColumnInfo val runtime: Int?,
     @ColumnInfo val genres: List<String>,
-    @ColumnInfo val synopsis: String?
+    @ColumnInfo val synopsis: String?,
+    @ColumnInfo val cast: List<CastMember>
 )
 
