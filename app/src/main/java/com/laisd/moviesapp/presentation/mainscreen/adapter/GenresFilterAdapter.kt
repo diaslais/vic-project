@@ -7,14 +7,16 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.laisd.moviesapp.R
 
-class GenresFilterAdapter() : RecyclerView.Adapter<GenresFilterAdapter.GenresFilterViewHolder>() {
+class GenresFilterAdapter(
+    val genreListener: (genre: String) -> Unit
+) : RecyclerView.Adapter<GenresFilterAdapter.GenresFilterViewHolder>() {
     var genresList = listOf<String>()
 
     inner class GenresFilterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvGenre = itemView.findViewById<TextView>(R.id.btnMovieGenre)
+        val btnGenre = itemView.findViewById<TextView>(R.id.btnMovieGenre)
 
         fun bind(genre: String) {
-            tvGenre.text = genre
+            btnGenre.text = genre
         }
     }
 
@@ -25,5 +27,11 @@ class GenresFilterAdapter() : RecyclerView.Adapter<GenresFilterAdapter.GenresFil
 
     override fun onBindViewHolder(holder: GenresFilterViewHolder, position: Int) {
         holder.bind(genresList[position])
+        val genre = genresList[position]
+
+        holder.btnGenre.setOnClickListener {
+            println("CLICOU NO GENERO $genre")
+            genreListener(genre)
+        }
     }
 }

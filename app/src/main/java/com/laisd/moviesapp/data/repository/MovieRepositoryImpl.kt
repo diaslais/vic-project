@@ -2,6 +2,7 @@ package com.laisd.moviesapp.data.repository
 
 import com.laisd.moviesapp.data.datasource.remote.RemoteDataSource
 import com.laisd.moviesapp.data.mapper.MovieMapper
+import com.laisd.moviesapp.domain.model.Genre
 import com.laisd.moviesapp.domain.model.Movie
 import com.laisd.moviesapp.domain.model.MovieDetail
 import com.laisd.moviesapp.domain.repository.MovieRepository
@@ -22,5 +23,8 @@ class MovieRepositoryImpl(
             language,
             appendToResponse
         ).map(movieMapper::toMovieDetail)
+
+    override fun getGenres(apiKey: String, language: String): Single<List<Genre>> =
+        remoteDataSource.getGenres(apiKey, language).map(movieMapper::toGenreList)
 
 }

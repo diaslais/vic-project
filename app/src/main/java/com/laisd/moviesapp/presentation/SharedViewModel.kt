@@ -21,13 +21,17 @@ class SharedViewModel(
     private val getFavoritesUseCase: GetFavoritesUseCase,
     private val getFavoriteDetailUseCase: GetFavoriteDetailUseCase,
     private val addFavoriteUseCase: AddFavoriteUseCase,
-    private val deleteFavoriteUseCase: DeleteFavoriteUseCase
+    private val deleteFavoriteUseCase: DeleteFavoriteUseCase,
+    private val getGenresUseCase: GetGenresUseCase
 ) : ViewModel() {
     private val compositeDisposable = CompositeDisposable()
 
     init {
         getPopularMovies()
         getFavoriteMovies()
+        getGenres()
+
+        println("ALOOOOOOOOOOOOOOOOO")
     }
 
     private val _popularMovies = MutableLiveData<List<Movie>>()
@@ -54,12 +58,25 @@ class SharedViewModel(
     }
 
     fun setMovieDetail(movieId: Int) {
-
         if (movieIsFavorite(movieId)) {
             getMovieDetailFromDataBase(movieId) { _movieDetail.postValue(it) }
+            println("PEGOU DO DATABASE")
         } else {
             getMovieDetailFromApi(movieId) { _movieDetail.postValue(it) }
+            println("PEGOU DA API")
         }
+
+//        getMovieDetailUseCase.execute(movieId)
+//            .subscribeOn(Schedulers.io())
+//            .subscribe({
+//               _movieDetail.postValue(it)
+//                println("PEGOU DO DATABASE")
+//            }, {
+//                getMovieDetailFromApi(movieId) {
+//                    _movieDetail.postValue(it)
+//                    println("PEGOU DA API")
+//                }
+//            }).let { compositeDisposable.add(it) }
     }
 
     private fun getMovieDetailFromApi(
@@ -91,8 +108,8 @@ class SharedViewModel(
             .into(imageView)
     }
 
-    fun setHeartIcon(imageButton: ImageButton, movieDetail: MovieDetail) {
-        if (movieIsFavorite(movieDetail.id)) {
+    fun setHeartIcon(imageButton: ImageButton, movieId: Int) {
+        if (movieIsFavorite(movieId)) {
             imageButton.setImageResource(R.drawable.ic_baseline_favorite_24)
         } else {
             imageButton.setImageResource(R.drawable.ic_baseline_favorite_border_24)
@@ -134,6 +151,7 @@ class SharedViewModel(
     private fun getFavoriteMovies() {
         getFavoritesUseCase.execute()
             .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ favoriteMovies ->
                 _favoriteMovies.postValue(favoriteMovies)
             }, Throwable::printStackTrace).let {
@@ -142,21 +160,84 @@ class SharedViewModel(
     }
 
     //region genres
-    private val _genresList = MutableLiveData<List<String>>(
-        arrayListOf(
-            "Ação",
-            "Anime",
-            "Comédia",
-            "Drama",
-            "Terror",
-            "Antigos",
-            "Suspense"
-        )
-    )
+    private val _genresList = MutableLiveData<List<String>>()
     val genresList: LiveData<List<String>>
         get() = _genresList
 
+    private fun getGenres () {
+        val genreNames = arrayListOf<String>()
+        getGenresUseCase.execute()
+            .subscribeOn(Schedulers.io())
+            .subscribe({
+               it.forEach {
+                   genreNames.add(it.title)
+               }
+                _genresList.postValue(genreNames)
+            }, Throwable::printStackTrace).let { compositeDisposable.add(it) }
+    }
+
     //endregion genres
+
+    //SEARCH
+    private val _filteredList = MutableLiveData<List<Movie>>()
+    val filteredList: LiveData<List<Movie>>
+        get() = _filteredList
+
+    private val _filteredFavorites = MutableLiveData<List<Movie>>()
+    val filteredFavorites: LiveData<List<Movie>>
+        get() = _filteredFavorites
+
+    fun search(query: String): LiveData<List<Movie>> {
+        val afilteredList = arrayListOf<Movie>()
+
+        _popularMovies.value?.forEach { movie ->
+            if (movie.title.toUpperCase().startsWith(query.toUpperCase())) {
+                afilteredList.add(movie)
+                _filteredList.value = afilteredList
+            }
+        }
+
+        return filteredList
+    }
+
+    fun searchFavorites(query: String): LiveData<List<Movie>> {
+        val afilteredList = arrayListOf<Movie>()
+
+        _favoriteMovies.value?.forEach { movie ->
+            if (movie.title.toUpperCase().startsWith(query.toUpperCase())) {
+                afilteredList.add(movie)
+                _filteredFavorites.value = afilteredList
+            }
+        }
+
+        return filteredFavorites
+    }
+
+    //GENRE SEARCH
+    private val _filteredByGenre = MutableLiveData<List<Movie>>()
+    val filteredByGenre: LiveData<List<Movie>>
+        get() = _filteredByGenre
+
+    fun filterByGenre(genre: String): LiveData<List<Movie>> {
+        val afilteredList = arrayListOf<Movie>()
+
+        _popularMovies.value?.forEach { movie ->
+            getMovieDetailFromApi(movie.id) { movieDetail ->
+                movieDetail.genres.forEach { movieDetailGenre ->
+                    if (movieDetailGenre == genre) {
+                        if (movie.id == movieDetail.id) {
+                            afilteredList.add(movie)
+                            _filteredByGenre.postValue(afilteredList)
+                        }
+                    }
+                }
+            }
+        }
+
+
+        return filteredByGenre
+    }
+
 
     override fun onCleared() {
         super.onCleared()

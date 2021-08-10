@@ -3,6 +3,7 @@ package com.laisd.moviesapp.di
 import androidx.room.Room
 import com.google.gson.GsonBuilder
 import com.laisd.moviesapp.data.api.MovieDetailService
+import com.laisd.moviesapp.data.api.MovieGenresService
 import com.laisd.moviesapp.data.api.MoviesService
 import com.laisd.moviesapp.data.datasource.local.LocalDataSource
 import com.laisd.moviesapp.data.datasource.local.LocalDataSourceImpl
@@ -33,7 +34,8 @@ val presentationModules = module {
             getFavoritesUseCase = get(),
             getFavoriteDetailUseCase = get(),
             addFavoriteUseCase = get(),
-            deleteFavoriteUseCase = get()
+            deleteFavoriteUseCase = get(),
+            getGenresUseCase = get()
         )
     }
 }
@@ -45,6 +47,7 @@ val domainModules = module {
     factory { GetFavoriteDetailUseCase(favoritesRepository = get()) }
     factory { AddFavoriteUseCase(favoritesRepository = get()) }
     factory { DeleteFavoriteUseCase(favoritesRepository = get()) }
+    factory { GetGenresUseCase(movieRepository = get()) }
 }
 
 val dataModules = module {
@@ -53,7 +56,7 @@ val dataModules = module {
     factory { FavoriteMapper() }
     factory { MovieMapper() }
     factory<LocalDataSource> { LocalDataSourceImpl(movieDao = get()) }
-    factory<RemoteDataSource> { RemoteDataSourceImpl(movieDetailService = get(), moviesService = get()) }
+    factory<RemoteDataSource> { RemoteDataSourceImpl(movieDetailService = get(), moviesService = get(), movieGenresService = get()) }
 }
 
 val dataBaseModules = module {
@@ -64,6 +67,7 @@ val dataBaseModules = module {
 val networkModules = module {
     factory { get<Retrofit>().create(MoviesService::class.java) }
     factory { get<Retrofit>().create(MovieDetailService::class.java) }
+    factory { get<Retrofit>().create(MovieGenresService::class.java) }
     single {
         Retrofit.Builder()
             .baseUrl("https://api.themoviedb.org/3/") //colocar no build config

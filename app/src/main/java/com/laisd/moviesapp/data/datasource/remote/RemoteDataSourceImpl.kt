@@ -1,14 +1,17 @@
 package com.laisd.moviesapp.data.datasource.remote
 
 import com.laisd.moviesapp.data.api.MovieDetailService
+import com.laisd.moviesapp.data.api.MovieGenresService
 import com.laisd.moviesapp.data.api.MoviesService
+import com.laisd.moviesapp.data.model.GenreListResponse
 import com.laisd.moviesapp.data.model.MovieDetailResponse
 import com.laisd.moviesapp.data.model.MoviesListResponse
 import io.reactivex.rxjava3.core.Single
 
 class RemoteDataSourceImpl(
     private val moviesService: MoviesService,
-    private val movieDetailService: MovieDetailService
+    private val movieDetailService: MovieDetailService,
+    private val movieGenresService: MovieGenresService
 ) : RemoteDataSource {
 
     override fun getMovies(apiKey: String, language: String): Single<MoviesListResponse> =
@@ -26,4 +29,8 @@ class RemoteDataSourceImpl(
             language,
             appendToResponse
         )
+
+    override fun getGenres(apiKey: String, language: String): Single<GenreListResponse> =
+        movieGenresService.getGenresResponse(apiKey, language)
+
 }
