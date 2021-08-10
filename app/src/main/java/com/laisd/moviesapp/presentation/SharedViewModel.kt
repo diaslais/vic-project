@@ -30,8 +30,6 @@ class SharedViewModel(
         getPopularMovies()
         getFavoriteMovies()
         getGenres()
-
-        println("ALOOOOOOOOOOOOOOOOO")
     }
 
     private val _popularMovies = MutableLiveData<List<Movie>>()
@@ -60,23 +58,9 @@ class SharedViewModel(
     fun setMovieDetail(movieId: Int) {
         if (movieIsFavorite(movieId)) {
             getMovieDetailFromDataBase(movieId) { _movieDetail.postValue(it) }
-            println("PEGOU DO DATABASE")
         } else {
             getMovieDetailFromApi(movieId) { _movieDetail.postValue(it) }
-            println("PEGOU DA API")
         }
-
-//        getMovieDetailUseCase.execute(movieId)
-//            .subscribeOn(Schedulers.io())
-//            .subscribe({
-//               _movieDetail.postValue(it)
-//                println("PEGOU DO DATABASE")
-//            }, {
-//                getMovieDetailFromApi(movieId) {
-//                    _movieDetail.postValue(it)
-//                    println("PEGOU DA API")
-//                }
-//            }).let { compositeDisposable.add(it) }
     }
 
     private fun getMovieDetailFromApi(
@@ -233,9 +217,29 @@ class SharedViewModel(
                 }
             }
         }
-
-
         return filteredByGenre
+    }
+
+    private val _favoritesFilteredByGenre = MutableLiveData<List<Movie>>()
+    val favoritesFilteredByGenre: LiveData<List<Movie>>
+        get() = _favoritesFilteredByGenre
+
+    fun filterFavoritesByGenre(genre: String): LiveData<List<Movie>> {
+        val afilteredList = arrayListOf<Movie>()
+
+        _favoriteMovies.value?.forEach { movie ->
+            getMovieDetailFromDataBase(movie.id) { movieDetail ->
+                movieDetail.genres.forEach { movieDetailGenre ->
+                    if (movieDetailGenre == genre) {
+                        if (movie.id == movieDetail.id) {
+                            afilteredList.add(movie)
+                            _favoritesFilteredByGenre.postValue(afilteredList)
+                        }
+                    }
+                }
+            }
+        }
+        return favoritesFilteredByGenre
     }
 
 
