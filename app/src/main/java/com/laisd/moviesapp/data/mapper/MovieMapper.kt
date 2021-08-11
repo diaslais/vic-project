@@ -12,7 +12,7 @@ import com.laisd.moviesapp.domain.model.MovieDetail
 class MovieMapper {
 
     fun toMovie(moviesListResponse: MoviesListResponse): List<Movie> =
-        moviesListResponse.popularMovies.map { movieResponse ->
+        moviesListResponse.moviesList.map { movieResponse ->
             Movie(
                 movieResponse.id,
                 movieResponse.poster,
