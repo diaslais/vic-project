@@ -1,5 +1,6 @@
 package com.laisd.moviesapp.data.datasource.remote
 
+import android.net.Uri
 import com.laisd.moviesapp.data.api.*
 import com.laisd.moviesapp.data.model.GenreListResponse
 import com.laisd.moviesapp.data.model.MovieDetailResponse
@@ -43,7 +44,7 @@ class RemoteDataSourceImpl(
     override fun searchMovie(
         apiKey: String,
         language: String,
-        query: String
+        query: Uri
     ): Single<MoviesListResponse> =
         searchMovieService.searchMovie(apiKey, language, query)
 }

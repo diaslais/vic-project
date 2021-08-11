@@ -1,5 +1,6 @@
 package com.laisd.moviesapp.data.datasource.remote
 
+import android.net.Uri
 import com.laisd.moviesapp.data.model.GenreListResponse
 import com.laisd.moviesapp.data.model.MovieDetailResponse
 import com.laisd.moviesapp.data.model.MoviesListResponse
@@ -15,6 +16,6 @@ interface RemoteDataSource {
 
     fun getMoviesByGenre(apiKey: String, language: String, genres: String): Single<MoviesListResponse>
 
-    fun searchMovie(apiKey: String, language: String, query: String): Single<MoviesListResponse>
+    fun searchMovie(apiKey: String, language: String, query: Uri): Single<MoviesListResponse>
 
 }

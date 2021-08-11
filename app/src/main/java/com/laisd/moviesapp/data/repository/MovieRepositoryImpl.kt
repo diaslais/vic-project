@@ -1,5 +1,6 @@
 package com.laisd.moviesapp.data.repository
 
+import androidx.core.net.toUri
 import com.laisd.moviesapp.data.datasource.remote.RemoteDataSource
 import com.laisd.moviesapp.data.mapper.MovieMapper
 import com.laisd.moviesapp.domain.model.Genre
@@ -26,6 +27,6 @@ class MovieRepositoryImpl(
         remoteDataSource.getMoviesByGenre(apiKey, language, genres).map(movieMapper::toMovie)
 
     override fun searchMovie(apiKey: String, language: String, query: String): Single<List<Movie>> =
-        remoteDataSource.searchMovie(apiKey, language, query).map(movieMapper::toMovie)
+        remoteDataSource.searchMovie(apiKey, language, query.toUri()).map(movieMapper::toMovie)
 
 }
