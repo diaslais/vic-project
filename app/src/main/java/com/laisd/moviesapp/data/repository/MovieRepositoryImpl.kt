@@ -17,14 +17,15 @@ class MovieRepositoryImpl(
         remoteDataSource.getMovies(apiKey, language).map(movieMapper::toMovie)
 
     override fun getMovieDetail(movieId: Int, apiKey: String, language: String, appendToResponse: String): Single<MovieDetail> =
-        remoteDataSource.getMovieDetail(
-            movieId,
-            apiKey,
-            language,
-            appendToResponse
-        ).map(movieMapper::toMovieDetail)
+        remoteDataSource.getMovieDetail(movieId, apiKey, language, appendToResponse).map(movieMapper::toMovieDetail)
 
     override fun getGenres(apiKey: String, language: String): Single<List<Genre>> =
         remoteDataSource.getGenres(apiKey, language).map(movieMapper::toGenreList)
+
+    override fun getMoviesByGenre(apiKey: String, language: String, genres: String): Single<List<Movie>> =
+        remoteDataSource.getMoviesByGenre(apiKey, language, genres).map(movieMapper::toMovie)
+
+    override fun searchMovie(apiKey: String, language: String, query: String): Single<List<Movie>> =
+        remoteDataSource.searchMovie(apiKey, language, query).map(movieMapper::toMovie)
 
 }

@@ -13,4 +13,8 @@ interface MovieRepository {
 
     fun getGenres(apiKey: String, language: String): Single<List<Genre>>
 
+    fun getMoviesByGenre(apiKey: String, language: String, genres: String): Single<List<Movie>>
+
+    fun searchMovie(apiKey: String, language: String, query: String): Single<List<Movie>>
+
 }
