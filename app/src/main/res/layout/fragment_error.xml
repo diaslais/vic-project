@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.moviedetails.ErrorFragment">
+
+    <ImageButton
+        android:id="@+id/ibErrorClose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/xlarge"
+        android:layout_marginEnd="@dimen/xlarge"
+        android:src="@drawable/ic_baseline_close_24"
+        android:backgroundTint="@color/transparent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <ImageView
+        android:id="@+id/ivError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/imgerror"
+        app:layout_constraintBottom_toTopOf="@id/tvErrorTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/tvErrorTitle"
+        style="@style/H1Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/xlarge"
+        android:text="@string/o_sistema_falhou"
+        android:textColor="@color/gray3"
+        app:layout_constraintBottom_toTopOf="@id/tvErrorDescription"
+        app:layout_constraintEnd_toEndOf="@id/ivError"
+        app:layout_constraintStart_toStartOf="@id/ivError"
+        app:layout_constraintTop_toBottomOf="@id/ivError" />
+
+    <TextView
+        android:id="@+id/tvErrorDescription"
+        style="@style/BodyText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/small"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/xlarge"
+        android:text="@string/error_description"
+        android:textColor="@color/gray3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvErrorTitle" />
+
+    <Button
+        android:id="@+id/btnErrorTryAgain"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/xxlarge"
+        android:backgroundTint="@color/transparent"
+        android:elevation="0dp"
+        android:fontFamily="@font/lato_bold"
+        android:text="@string/tentar_novamente"
+        android:textAllCaps="false"
+        android:textColor="@color/green"
+        android:textSize="@dimen/h1_text_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/tab_indicator"
+        app:layout_constraintTop_toBottomOf="@id/btnErrorTryAgain"
+        app:layout_constraintStart_toStartOf="@id/btnErrorTryAgain"
+        app:layout_constraintEnd_toEndOf="@id/btnErrorTryAgain"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

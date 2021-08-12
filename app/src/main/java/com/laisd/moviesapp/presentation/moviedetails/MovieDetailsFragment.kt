@@ -4,11 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
+import com.laisd.moviesapp.R
 import com.laisd.moviesapp.databinding.FragmentMovieDetailsBinding
 import com.laisd.moviesapp.domain.model.MovieDetail
 import com.laisd.moviesapp.presentation.SharedViewModel
+import com.laisd.moviesapp.presentation.mainscreen.MainScreenFragmentDirections
 import com.laisd.moviesapp.presentation.moviedetails.adapter.CastMembersAdapter
 import com.laisd.moviesapp.presentation.moviedetails.adapter.MovieGenresAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -31,20 +35,40 @@ class MovieDetailsFragment : Fragment() {
 
         val args = MovieDetailsFragmentArgs.fromBundle(requireArguments())
 
-        sharedViewModel.setMovieDetail(args.movieId)
-        sharedViewModel.movieDetail.observe(viewLifecycleOwner, Observer {
-            setMovieInfo(it)
-        })
+        binding.ibBack.setOnClickListener {
+            activity?.onBackPressed()
+        }
 
-        val genresRecyclerView = binding.rvMovieDetailGenres
-        sharedViewModel.genresList.observe(viewLifecycleOwner, Observer { genresList ->
-            genresRecyclerView.adapter = MovieGenresAdapter(genresList)
-        })
+        sharedViewModel.favoriteMovies.observe(viewLifecycleOwner) {
+            sharedViewModel.setMovieDetail(args.movieId)
 
-        val castRecyclerView = binding.rvCastMembers
-        sharedViewModel.movieDetail.observe(viewLifecycleOwner, Observer { movieDetail ->
-            castRecyclerView.adapter = CastMembersAdapter(movieDetail.cast)
-        })
+            sharedViewModel.movieDetail.observe(viewLifecycleOwner) { movieDetail ->
+                if (movieDetail == null) {
+                    navigateToError()
+                } else {
+                    setHeartIcon(args.movieId)
+                    setMovieInfo(movieDetail)
+                    binding.rvCastMembers.adapter = CastMembersAdapter(movieDetail.cast)
+                }
+            }
+        }
+
+        binding.ibMovieDetailFavorite.setOnClickListener {
+            favoriteClicked(args.movieId)
+        }
+    }
+
+    private fun favoriteClicked(movieId: Int) {
+        sharedViewModel.favoriteClicked(movieId)
+        if (sharedViewModel.movieIsFavorite(movieId)) {
+            sendToast(getString(R.string.removido))
+        } else {
+            sendToast(getString(R.string.adicionado))
+        }
+    }
+
+    private fun sendToast(message: String) {
+        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun setMovieInfo(movieDetail: MovieDetail) {
@@ -54,8 +78,18 @@ class MovieDetailsFragment : Fragment() {
         binding.tvMovieDetailPg.text = movieDetail.filmCertification
         binding.tvMovieDetailRuntime.text = movieDetail.runtime.toString()
         binding.tvMovieDetailSynopsis.text = movieDetail.synopsis
-        sharedViewModel.setHeartIcon(binding.ibMovieDetailFavorite, movieDetail)
         sharedViewModel.setBackdropPoster(this, movieDetail, binding.ivMovieDetailPoster)
+        binding.rvMovieDetailGenres.adapter = MovieGenresAdapter(movieDetail.genres)
+    }
+
+    private fun setHeartIcon(movieId: Int) {
+        sharedViewModel.setHeartIcon(binding.ibMovieDetailFavorite, movieId)
+    }
+
+    private fun navigateToError() {
+        view?.findNavController()?.navigate(
+            MovieDetailsFragmentDirections.actionMovieDetailsFragmentToErrorFragment()
+        )
     }
 
     override fun onDestroyView() {
