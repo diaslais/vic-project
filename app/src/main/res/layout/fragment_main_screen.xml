@@ -9,18 +9,20 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         tools:context=".presentation.mainscreen.MainScreenFragment">
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/svSearchMovie"
+            style="@style/BodyText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/lato"
-            android:paddingStart="-12dp"
-            android:paddingEnd="0dp"
-            android:paddingBottom="10dp"
+            android:layout_marginEnd="@dimen/xlarge"
+            android:layout_marginTop="@dimen/large"
+            android:nextFocusLeft="@id/svSearchMovie"
+            android:nextFocusUp="@id/svSearchMovie"
+            android:paddingBottom="@dimen/xsmall"
             android:searchIcon="@drawable/ic_baseline_search_24"
             app:defaultQueryHint="Pesquisar por um filme..."
             app:iconifiedByDefault="false"
@@ -34,18 +36,65 @@
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/xsmall"
             app:layout_constraintBottom_toTopOf="@id/rvGenres"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/svSearchMovie"
+            app:tabIndicator="@drawable/tab_indicator"
+            app:tabIndicatorColor="@color/green"
+            app:tabIndicatorFullWidth="false"
+            app:tabPaddingBottom="@dimen/xxsmall"
+            app:tabPaddingEnd="@dimen/small"
+            app:tabPaddingStart="@dimen/large"
+            app:tabSelectedTextColor="@color/gray1"
+            app:tabTextAppearance="@style/H1Text"
+            app:tabTextColor="@color/gray1_30" />
+
+        <ImageView
+            android:id="@+id/ivGreenView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/tab_indicator"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@id/tvSearchMode"
+            app:layout_constraintStart_toStartOf="@id/tvSearchMode" />
+
+        <TextView
+            android:id="@+id/tvSearchMode"
+            style="@style/H1Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/xlarge"
+            android:layout_marginBottom="@dimen/xxsmall"
+            android:text="Modo pesquisa"
+            android:textColor="@color/gray1"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@id/tabLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/svSearchMovie" />
+
+        <TextView
+            android:id="@+id/tvBack"
+            style="@style/BodyTextBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Voltar ao início"
+            android:textColor="@color/green"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="@id/tvSearchMode"
+            app:layout_constraintTop_toBottomOf="@id/tvSearchMode" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvGenres"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="@dimen/small"
             android:clipToPadding="false"
             android:orientation="horizontal"
-            android:paddingHorizontal="12dp"
+            android:paddingHorizontal="@dimen/small"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@id/vpMovies"
             app:layout_constraintEnd_toEndOf="parent"
@@ -53,77 +102,21 @@
             app:layout_constraintTop_toBottomOf="@id/tabLayout"
             tools:listitem="@layout/item_genre" />
 
-        <!--        <View-->
-        <!--            android:id="@+id/vLine1"-->
-        <!--            android:layout_width="32dp"-->
-        <!--            android:layout_height="4dp"-->
-        <!--            android:layout_marginTop="10dp"-->
-        <!--            android:background="@color/green"-->
-        <!--            android:visibility="visible"-->
-        <!--            app:layout_constraintBottom_toTopOf="@id/tvAllMovies"-->
-        <!--            app:layout_constraintStart_toStartOf="@id/tvAllMovies" />-->
-
-        <!--        <TextView-->
-        <!--            android:id="@+id/tvAllMovies"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginStart="26dp"-->
-        <!--            android:layout_marginTop="18dp"-->
-        <!--            android:fontFamily="@font/lato_bold"-->
-        <!--            android:text="Todos os filmes"-->
-        <!--            android:textColor="@color/gray1_30"-->
-        <!--            android:textSize="24sp"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintTop_toBottomOf="@id/svSearchMovie" />-->
-
-        <!--        <TextView-->
-        <!--            android:id="@+id/tvBackToBeginning"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="20dp"-->
-        <!--            android:fontFamily="@font/lato_bold"-->
-        <!--            android:text="Voltar ao início"-->
-        <!--            android:textColor="@color/green"-->
-        <!--            android:visibility="invisible"-->
-        <!--            app:layout_constraintStart_toStartOf="@id/tvAllMovies"-->
-        <!--            app:layout_constraintTop_toBottomOf="@id/tvAllMovies" />-->
-
-        <!--        <View-->
-        <!--            android:id="@+id/vLine2"-->
-        <!--            android:layout_width="32dp"-->
-        <!--            android:layout_height="4dp"-->
-        <!--            android:layout_marginTop="10dp"-->
-        <!--            android:background="@color/green"-->
-        <!--            android:visibility="visible"-->
-        <!--            app:layout_constraintStart_toStartOf="@id/tvAllMovies"-->
-        <!--            app:layout_constraintTop_toBottomOf="@id/tvAllMovies" />-->
-
-        <!--        <TextView-->
-        <!--            android:id="@+id/tvFavorites"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginTop="18dp"-->
-        <!--            android:layout_marginEnd="26dp"-->
-        <!--            android:fontFamily="@font/lato_bold"-->
-        <!--            android:text="Favoritos"-->
-        <!--            android:textColor="@color/gray1_30"-->
-        <!--            android:textSize="24sp"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            app:layout_constraintTop_toBottomOf="@id/svSearchMovie" />-->
-
-        <!--        <View-->
-        <!--            android:id="@+id/vLine3"-->
-        <!--            android:layout_width="32dp"-->
-        <!--            android:layout_height="4dp"-->
-        <!--            android:layout_marginTop="10dp"-->
-        <!--            android:background="@color/green"-->
-        <!--            android:visibility="visible"-->
-        <!--            app:layout_constraintStart_toStartOf="@id/tvFavorites"-->
-        <!--            app:layout_constraintTop_toBottomOf="@id/tvFavorites" />-->
-
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/vpMovies"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rvGenres" />
+
+        <ImageView
+            android:id="@+id/ivSearchNotFound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/imgsearch"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
