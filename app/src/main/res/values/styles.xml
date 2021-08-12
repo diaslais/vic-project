@@ -18,4 +18,30 @@
         <item name="cornerSizeBottomRight">0dp</item>
         <item name="cornerSizeBottomLeft">35dp</item>
     </style>
+
+    <style name="H1Text">
+        <item name="fontFamily">@font/lato_bold</item>
+        <item name="android:textSize">@dimen/h1_text_size</item>
+    </style>
+
+    <style name="H2Text">
+        <item name="fontFamily">@font/lato</item>
+        <item name="android:textSize">@dimen/h2_text_size</item>
+    </style>
+
+    <style name="BodyText">
+        <item name="fontFamily">@font/lato</item>
+        <item name="android:textSize">@dimen/body_text_size</item>
+    </style>
+
+    <style name="BodyTextBold">
+        <item name="fontFamily">@font/lato_bold</item>
+        <item name="android:textSize">@dimen/body_text_size</item>
+    </style>
+
+    <style name="SmallText">
+        <item name="fontFamily">@font/lato</item>
+        <item name="android:textSize">@dimen/small_text_size</item>
+    </style>
+
 </resources>
