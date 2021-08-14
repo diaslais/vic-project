@@ -23,6 +23,10 @@ class MainScreenFragment : Fragment(), SearchView.OnQueryTextListener {
     private val sharedViewModel by viewModel<SharedViewModel>()
     private lateinit var viewPagerAdapter: ViewPagerAdapter
     private lateinit var titles: List<String>
+    private lateinit var genresAdapter: GenresFilterAdapter
+    private var searchMode = false
+    private var selectedGenre: String? = null
+    private var selectedGenrePosition: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,8 +39,13 @@ class MainScreenFragment : Fragment(), SearchView.OnQueryTextListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sharedViewModel.getPopularMovies()
-        sharedViewModel.getFavoriteMovies()
+        genresAdapter =
+            GenresFilterAdapter(requireContext(), selectedGenrePosition, ::genreClickListener)
+
+        if (!searchMode) {
+            sharedViewModel.getPopularMovies()
+            sharedViewModel.getFavoriteMovies()
+        }
 
         setSearchView(binding.svSearchMovie)
         setViewPager()
@@ -77,37 +86,63 @@ class MainScreenFragment : Fragment(), SearchView.OnQueryTextListener {
         }.attach()
     }
 
-    private fun setMoviesAndFavorites() {
-        sharedViewModel.popularMovies.observe(viewLifecycleOwner) {
-            viewPagerAdapter.dataSet[0] = it
-            viewPagerAdapter.notifyDataSetChanged()
-        }
-
-        sharedViewModel.favoriteMovies.observe(viewLifecycleOwner) {
-            viewPagerAdapter.dataSet[1] = it
-            viewPagerAdapter.notifyDataSetChanged()
+    private fun genreClickListener(genre: String?, position: Int?) {
+        selectedGenre = genre
+        selectedGenrePosition = position
+        if (genre != null) {
+            genreFilter(genre)
+        } else {
+            setMoviesAndFavorites()
+            selectedGenrePosition = null
         }
     }
 
-    private fun genresRecyclerView() {
-        val genresAdapter =
-            GenresFilterAdapter(requireContext(), ::setMoviesAndFavorites, ::genreFilter)
-        binding.rvGenres.adapter = genresAdapter
+    private fun setMoviesAndFavorites() {
+        if (searchMode) {
+            sharedViewModel.searchFromApi.observe(viewLifecycleOwner) {
+                viewPagerAdapter.dataSet[0] = it
+                viewPagerAdapter.notifyDataSetChanged()
+            }
+        } else if (selectedGenre != null) {
+            sharedViewModel.moviesByGenreFromApi.observe(viewLifecycleOwner) {
+                viewPagerAdapter.dataSet[0] = it
+                viewPagerAdapter.notifyDataSetChanged()
+            }
+            sharedViewModel.filterByGenreFromApi(selectedGenre!!)
+        } else {
+            sharedViewModel.popularMovies.observe(viewLifecycleOwner) {
+                viewPagerAdapter.dataSet[0] = it
+                viewPagerAdapter.notifyDataSetChanged()
+            }
 
-        sharedViewModel.allGenres.observe(viewLifecycleOwner) {
-            sharedViewModel.genreTitles().observe(viewLifecycleOwner) { genreTitles ->
-                genresAdapter.genresList = genreTitles
-                genresAdapter.notifyDataSetChanged()
+            sharedViewModel.favoriteMovies.observe(viewLifecycleOwner) {
+                viewPagerAdapter.dataSet[1] = it
+                viewPagerAdapter.notifyDataSetChanged()
             }
         }
     }
 
-    private fun movieSearch(query: String) {
-        sharedViewModel.searchMovieFromApi(query, binding.ivSearchNotFound, binding.vpMovies)
-        sharedViewModel.searchFromApi.observe(viewLifecycleOwner) { filteredList ->
-            viewPagerAdapter.dataSet[0] = filteredList
-            viewPagerAdapter.notifyDataSetChanged()
+    private fun genresRecyclerView() {
+        binding.rvGenres.adapter = genresAdapter
+        sharedViewModel.allGenres.observe(viewLifecycleOwner) {
+            sharedViewModel.genreTitles.observe(viewLifecycleOwner) { genreTitles ->
+                genresAdapter.genresList = genreTitles
+                genresAdapter.notifyDataSetChanged()
+            }
+            sharedViewModel.genreTitles()
         }
+    }
+
+    private fun movieSearch(query: String) {
+        sharedViewModel.searchFromApi.observe(viewLifecycleOwner) { filteredList ->
+            if (selectedGenre == null) {
+                viewPagerAdapter.dataSet[0] = filteredList
+                viewPagerAdapter.notifyDataSetChanged()
+            } else {
+                genreFilter(selectedGenre!!)
+            }
+        }
+        sharedViewModel.searchMovieFromApi(query, binding.ivSearchNotFound, binding.vpMovies)
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
@@ -118,39 +153,57 @@ class MainScreenFragment : Fragment(), SearchView.OnQueryTextListener {
     }
 
     override fun onQueryTextChange(query: String?): Boolean {
+        val searchPlate: View =
+            binding.svSearchMovie.findViewById(androidx.appcompat.R.id.search_plate)
         if (query != null) {
+            searchMode = true
             movieSearch(query)
             binding.tabLayout.visibility = View.INVISIBLE
             binding.vpMovies.isUserInputEnabled = false
             binding.ivGreenView.visibility = View.VISIBLE
             binding.tvSearchMode.visibility = View.VISIBLE
             binding.tvBack.visibility = View.VISIBLE
-
+            searchPlate.setBackgroundResource(R.drawable.searchview_background_green)
         }
         if (query.isNullOrEmpty()) {
+            searchMode = false
+            setMoviesAndFavorites()
             binding.tabLayout.visibility = View.VISIBLE
             binding.vpMovies.isUserInputEnabled = true
             binding.ivGreenView.visibility = View.INVISIBLE
             binding.tvSearchMode.visibility = View.INVISIBLE
             binding.tvBack.visibility = View.INVISIBLE
-            setMoviesAndFavorites()
+            searchPlate.setBackgroundResource(R.drawable.searchview_background)
         }
         return false
     }
 
     private fun genreFilter(genre: String) {
-        sharedViewModel.filterByGenreFromApi(genre).observe(viewLifecycleOwner) {
-            viewPagerAdapter.dataSet[0] = it
-            viewPagerAdapter.notifyDataSetChanged()
-        }
+        if (searchMode) {
+            sharedViewModel.moviesByGenreInSearchMode.observe(viewLifecycleOwner) {
+                viewPagerAdapter.dataSet[0] = it
+                viewPagerAdapter.notifyDataSetChanged()
+            }
+            sharedViewModel.filterByGenreInSearchMode(genre)
+        } else {
+            sharedViewModel.moviesByGenreFromApi.observe(viewLifecycleOwner) {
+                viewPagerAdapter.dataSet[0] = it
+                viewPagerAdapter.notifyDataSetChanged()
+            }
+            sharedViewModel.filterByGenreFromApi(genre)
 
-        sharedViewModel.filterByGenreFromFavorites(genre).observe(viewLifecycleOwner) {
-            viewPagerAdapter.dataSet[1] = it
-            viewPagerAdapter.notifyDataSetChanged()
+            sharedViewModel.moviesByGenreFromFavorites.observe(viewLifecycleOwner) {
+                viewPagerAdapter.dataSet[1] = it
+                viewPagerAdapter.notifyDataSetChanged()
+            }
+            sharedViewModel.filterByGenreFromFavorites(genre)
         }
     }
 
     private fun favoriteClick(movie: Movie) {
+        sharedViewModel.movieFoundByGenreFilter(selectedGenre)
+        sharedViewModel.movieFoundBySearchMode(searchMode)
+
         sharedViewModel.favoriteClicked(movie.id)
         if (sharedViewModel.movieIsFavorite(movie.id)) {
             sendToast(getString(R.string.removido))
