@@ -14,4 +14,5 @@
     <string name="adicionado">Adicionado aos favoritos</string>
     <string name="o_sistema_falhou">O sistema falhou</string>
     <string name="error_description">Por algum motivo, não foi possível processar com essa solicitação. Por favor, tente novamente.</string>
+    <string name="voltar_ao_in_cio">Voltar ao início</string>
 </resources>
