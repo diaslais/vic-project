@@ -1,7 +1,6 @@
 package com.laisd.moviesapp.data.mapper
 
-import com.laisd.moviesapp.data.model.MovieEntity
-import com.laisd.moviesapp.domain.model.CastMember
+import com.laisd.moviesapp.data.model.local.MovieEntity
 import com.laisd.moviesapp.domain.model.Movie
 import com.laisd.moviesapp.domain.model.MovieDetail
 
@@ -14,23 +13,6 @@ class FavoriteMapper {
                 movieEntity.poster,
                 movieEntity.title,
                 movieEntity.userRating
-            )
-        }
-
-
-    fun mapFromEntityToMovieDetailList(favoriteMovies: List<MovieEntity>): List<MovieDetail> =
-        favoriteMovies.map { movieEntity ->
-            MovieDetail(
-                movieEntity.movieId,
-                movieEntity.backdropPoster,
-                movieEntity.title,
-                movieEntity.userRating,
-                movieEntity.releaseDate,
-                movieEntity.filmCertification,
-                movieEntity.runtime,
-                movieEntity.genres,
-                movieEntity.synopsis,
-                movieEntity.cast
             )
         }
 

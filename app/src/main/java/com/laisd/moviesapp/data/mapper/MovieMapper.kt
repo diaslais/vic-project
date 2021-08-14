@@ -1,9 +1,9 @@
 package com.laisd.moviesapp.data.mapper
 
-import com.laisd.moviesapp.data.model.CastMemberResponse
-import com.laisd.moviesapp.data.model.GenreListResponse
-import com.laisd.moviesapp.data.model.MovieDetailResponse
-import com.laisd.moviesapp.data.model.MoviesListResponse
+import com.laisd.moviesapp.data.model.remote.CastMemberResponse
+import com.laisd.moviesapp.data.model.remote.GenreListResponse
+import com.laisd.moviesapp.data.model.remote.MovieDetailResponse
+import com.laisd.moviesapp.data.model.remote.MoviesListResponse
 import com.laisd.moviesapp.domain.model.CastMember
 import com.laisd.moviesapp.domain.model.Genre
 import com.laisd.moviesapp.domain.model.Movie
@@ -17,7 +17,7 @@ class MovieMapper {
                 movieResponse.id,
                 movieResponse.poster,
                 movieResponse.title,
-                movieResponse.userRating
+                formatUserRating(movieResponse.userRating)
             )
         }
 
@@ -26,14 +26,29 @@ class MovieMapper {
             movieDetailResponse.id,
             movieDetailResponse.backdropPoster,
             movieDetailResponse.title,
-            movieDetailResponse.userRating,
-            movieDetailResponse.releaseDate,
+            formatUserRating(movieDetailResponse.userRating),
+            formatReleaseDate(movieDetailResponse.releaseDate),
             getFilmCertification(movieDetailResponse),
-            movieDetailResponse.runtime,
+            formatMovieRuntime(movieDetailResponse.runtime),
             getGenresList(movieDetailResponse),
             movieDetailResponse.synopsis,
             getCast(movieDetailResponse)
         )
+
+    private fun formatUserRating(userRating: Float): String =
+        (userRating * 10).toInt().toString() + "%"
+
+    private fun formatReleaseDate(date: String): String = date.take(4)
+
+    private fun formatMovieRuntime(runtime: Int?): String? {
+        var movieRuntime: String? = null
+        runtime?.let {
+            val hours = it / 60
+            val minutes = it % 60
+            movieRuntime = hours.toString() + "h " + minutes.toString() + "min"
+        }
+        return movieRuntime
+    }
 
     private fun getFilmCertification(movieDetailResponse: MovieDetailResponse): String {
         val releasesResponseList = movieDetailResponse.releases.countries
