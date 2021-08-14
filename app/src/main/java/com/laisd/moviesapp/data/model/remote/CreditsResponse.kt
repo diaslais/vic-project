@@ -1,4 +1,4 @@
-package com.laisd.moviesapp.data.model
+package com.laisd.moviesapp.data.model.remote
 
 import com.google.gson.annotations.SerializedName
 
