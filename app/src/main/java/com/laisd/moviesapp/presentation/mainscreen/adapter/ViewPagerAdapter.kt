@@ -18,7 +18,7 @@ class ViewPagerAdapter(
 
     inner class ViewPagerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val recyclerView = itemView.findViewById<RecyclerView>(R.id.rvMovies)
+        private val recyclerView = itemView.findViewById<RecyclerView>(R.id.rvMovies)
 
         fun bind(list: List<Movie>) {
             val recyclerAdapter = MoviesRecyclerViewAdapter(isFavorite, favoriteListener, itemClickListener)

@@ -21,11 +21,11 @@ class MoviesRecyclerViewAdapter(
 
     inner class MoviesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val imageBaseUrl = "https://image.tmdb.org/t/p/w500/"
+        private val imageBaseUrl = "https://image.tmdb.org/t/p/w500/"
 
-        val tvTitle = itemView.findViewById<TextView>(R.id.tvMovieTitle)
-        val ivPoster = itemView.findViewById<ImageView>(R.id.ivMovieImage)
-        val tvRating = itemView.findViewById<TextView>(R.id.tvRating)
+        private val tvTitle = itemView.findViewById<TextView>(R.id.tvMovieTitle)
+        private val ivPoster = itemView.findViewById<ImageView>(R.id.ivMovieImage)
+        private val tvRating = itemView.findViewById<TextView>(R.id.tvRating)
         val ibFavorite = itemView.findViewById<ImageButton>(R.id.ibFavorite)
 
         fun bind(movie: Movie) {
@@ -36,7 +36,7 @@ class MoviesRecyclerViewAdapter(
 
             tvTitle.text = movie.title
             loadImage(pictureUrl, ivPoster)
-            tvRating.text = movie.userRating.toString()
+            tvRating.text = movie.userRating
 
             if (isFavorite(movie.id)) {
                 ibFavorite.setImageResource(R.drawable.ic_baseline_favorite_24)
@@ -48,7 +48,7 @@ class MoviesRecyclerViewAdapter(
         private fun loadImage(url: String?, imageView: ImageView) {
             Glide.with(itemView)
                 .load(url)
-                .fallback(R.drawable.drive)
+                .fallback(R.drawable.ic_baseline_android_24)
                 .centerCrop()
                 .into(imageView)
         }
