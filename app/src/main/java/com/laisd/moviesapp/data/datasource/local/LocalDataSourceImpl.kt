@@ -1,7 +1,7 @@
 package com.laisd.moviesapp.data.datasource.local
 
 import com.laisd.moviesapp.data.db.MovieDao
-import com.laisd.moviesapp.data.model.MovieEntity
+import com.laisd.moviesapp.data.model.local.MovieEntity
 import io.reactivex.rxjava3.core.Single
 
 class LocalDataSourceImpl (private val movieDao: MovieDao): LocalDataSource {

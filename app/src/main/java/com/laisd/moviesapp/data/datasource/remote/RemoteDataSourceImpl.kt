@@ -2,9 +2,9 @@ package com.laisd.moviesapp.data.datasource.remote
 
 import android.net.Uri
 import com.laisd.moviesapp.data.api.*
-import com.laisd.moviesapp.data.model.GenreListResponse
-import com.laisd.moviesapp.data.model.MovieDetailResponse
-import com.laisd.moviesapp.data.model.MoviesListResponse
+import com.laisd.moviesapp.data.model.remote.GenreListResponse
+import com.laisd.moviesapp.data.model.remote.MovieDetailResponse
+import com.laisd.moviesapp.data.model.remote.MoviesListResponse
 import io.reactivex.rxjava3.core.Single
 
 class RemoteDataSourceImpl(

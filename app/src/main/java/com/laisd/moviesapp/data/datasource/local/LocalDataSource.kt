@@ -1,7 +1,6 @@
 package com.laisd.moviesapp.data.datasource.local
 
-import com.laisd.moviesapp.data.model.MovieEntity
-import com.laisd.moviesapp.domain.model.MovieDetail
+import com.laisd.moviesapp.data.model.local.MovieEntity
 import io.reactivex.rxjava3.core.Single
 
 interface LocalDataSource {
