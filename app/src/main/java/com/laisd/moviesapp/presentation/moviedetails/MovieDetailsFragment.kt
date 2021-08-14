@@ -6,13 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import com.laisd.moviesapp.R
 import com.laisd.moviesapp.databinding.FragmentMovieDetailsBinding
 import com.laisd.moviesapp.domain.model.MovieDetail
 import com.laisd.moviesapp.presentation.SharedViewModel
-import com.laisd.moviesapp.presentation.mainscreen.MainScreenFragmentDirections
 import com.laisd.moviesapp.presentation.moviedetails.adapter.CastMembersAdapter
 import com.laisd.moviesapp.presentation.moviedetails.adapter.MovieGenresAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -72,11 +70,11 @@ class MovieDetailsFragment : Fragment() {
     }
 
     private fun setMovieInfo(movieDetail: MovieDetail) {
-        binding.tvMovieDetailRating.text = movieDetail.userRating.toString()
+        binding.tvMovieDetailRating.text = movieDetail.userRating
         binding.tvMovieDetailTitle.text = movieDetail.title
         binding.tvMovieDetailYear.text = movieDetail.releaseDate
         binding.tvMovieDetailPg.text = movieDetail.filmCertification
-        binding.tvMovieDetailRuntime.text = movieDetail.runtime.toString()
+        binding.tvMovieDetailRuntime.text = movieDetail.runtime
         binding.tvMovieDetailSynopsis.text = movieDetail.synopsis
         sharedViewModel.setBackdropPoster(this, movieDetail, binding.ivMovieDetailPoster)
         binding.rvMovieDetailGenres.adapter = MovieGenresAdapter(movieDetail.genres)
