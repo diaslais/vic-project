@@ -1,6 +1,6 @@
 package com.laisd.moviesapp.data.api
 
-import com.laisd.moviesapp.data.model.MovieDetailResponse
+import com.laisd.moviesapp.data.model.remote.MovieDetailResponse
 import io.reactivex.rxjava3.core.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
