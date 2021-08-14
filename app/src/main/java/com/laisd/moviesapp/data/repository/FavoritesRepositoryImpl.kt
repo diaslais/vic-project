@@ -23,10 +23,7 @@ class FavoritesRepositoryImpl(
     override fun getFavoriteMovies(): Single<List<Movie>> =
         localDataSource.getFavoriteMovies().map(favoriteMapper::mapFromEntityToMovie)
 
-    override fun getFavoriteMovieDetail(movieId: Int): Single<List<MovieDetail>> =
-        localDataSource.getFavoriteMovies().map(favoriteMapper::mapFromEntityToMovieDetailList)
-
-    override fun searchMovie(movieId: Int): Single<MovieDetail> =
-        localDataSource.searchMovie(movieId).map(favoriteMapper::mapFromEntityToMovieDetail)
+    override fun getFavoriteMovieDetail(movieId: Int): Single<MovieDetail> =
+        localDataSource.getFavoriteMovieDetail(movieId).map(favoriteMapper::mapFromEntityToMovieDetail)
 
 }

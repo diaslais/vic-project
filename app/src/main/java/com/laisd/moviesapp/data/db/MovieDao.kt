@@ -16,5 +16,5 @@ interface MovieDao {
     fun getFavoriteMovies(): Single<List<MovieEntity>>
 
     @Query("SELECT * FROM movie WHERE movieId = :movieId LIMIT 1")
-    fun searchMovie(movieId: Int): Single<MovieEntity>
+    fun getFavoriteMovieDetail(movieId: Int): Single<MovieEntity>
 }

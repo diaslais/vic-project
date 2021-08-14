@@ -16,6 +16,6 @@ class LocalDataSourceImpl (private val movieDao: MovieDao): LocalDataSource {
 
     override fun getFavoriteMovies(): Single<List<MovieEntity>> = movieDao.getFavoriteMovies()
 
-    override fun searchMovie(movieId: Int): Single<MovieEntity> = movieDao.searchMovie(movieId)
+    override fun getFavoriteMovieDetail(movieId: Int): Single<MovieEntity> = movieDao.getFavoriteMovieDetail(movieId)
 
 }

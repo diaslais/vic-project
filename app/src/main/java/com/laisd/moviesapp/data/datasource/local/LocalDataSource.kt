@@ -11,5 +11,5 @@ interface LocalDataSource {
 
     fun getFavoriteMovies(): Single<List<MovieEntity>>
 
-    fun searchMovie(movieId: Int): Single<MovieEntity>
+    fun getFavoriteMovieDetail(movieId: Int): Single<MovieEntity>
 }

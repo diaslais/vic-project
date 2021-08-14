@@ -7,5 +7,5 @@ import io.reactivex.rxjava3.core.Single
 class GetFavoriteDetailUseCase(private val favoritesRepository: FavoritesRepository) {
 
     fun execute(movieId: Int): Single<MovieDetail> =
-        favoritesRepository.searchMovie(movieId)
+        favoritesRepository.getFavoriteMovieDetail(movieId)
 }
