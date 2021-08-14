@@ -12,7 +12,7 @@ class MovieGenresAdapter(
 ) : RecyclerView.Adapter<MovieGenresAdapter.MovieGenresViewHolder>() {
 
     inner class MovieGenresViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvGenre = itemView.findViewById<TextView>(R.id.tvMovieDetailGenre)
+        private val tvGenre = itemView.findViewById<TextView>(R.id.tvMovieDetailGenre)
 
         fun bind(genre: String) {
             tvGenre.text = genre

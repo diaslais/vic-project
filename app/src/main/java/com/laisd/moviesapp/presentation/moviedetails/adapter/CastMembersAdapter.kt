@@ -16,14 +16,14 @@ class CastMembersAdapter(
 
     inner class CastMembersViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val imageBaseUrl = "https://image.tmdb.org/t/p/w500/"
+        private val imageBaseUrl = "https://image.tmdb.org/t/p/w500/"
 
-        val tvMemberName = itemView.findViewById<TextView>(R.id.tvCastMemberName)
-        val tvMemberRole = itemView.findViewById<TextView>(R.id.tvCastMemberRole)
-        val ivMemberPicture = itemView.findViewById<ImageView>(R.id.ivCasMemberPicture)
+        private val tvMemberName = itemView.findViewById<TextView>(R.id.tvCastMemberName)
+        private val tvMemberRole = itemView.findViewById<TextView>(R.id.tvCastMemberRole)
+        private val ivMemberPicture = itemView.findViewById<ImageView>(R.id.ivCasMemberPicture)
 
         fun bind(castMember: CastMember) {
-            var pictureUrl:String? = null
+            var pictureUrl: String? = null
 
             castMember.photo?.let { pictureUrl = imageBaseUrl + it }
 
@@ -35,14 +35,16 @@ class CastMembersAdapter(
         private fun loadImage(url: String?, imageView: ImageView) {
             Glide.with(itemView)
                 .load(url)
-                .fallback(R.drawable.drive)
+                .fallback(R.drawable.ic_baseline_android_24)
                 .centerCrop()
                 .into(imageView)
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CastMembersViewHolder =
-        CastMembersViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_cast_member, parent, false))
+        CastMembersViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.item_cast_member, parent, false)
+        )
 
     override fun getItemCount() = castMembers.size
 
