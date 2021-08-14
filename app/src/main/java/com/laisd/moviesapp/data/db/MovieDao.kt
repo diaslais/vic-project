@@ -1,8 +1,7 @@
 package com.laisd.moviesapp.data.db
 
 import androidx.room.*
-import com.laisd.moviesapp.data.model.MovieEntity
-import com.laisd.moviesapp.domain.model.MovieDetail
+import com.laisd.moviesapp.data.model.local.MovieEntity
 import io.reactivex.rxjava3.core.Single
 
 @Dao
