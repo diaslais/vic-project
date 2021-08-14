@@ -18,6 +18,8 @@ buildscript {
         junit_version = "4.13.2"
         okhttp_version = "4.9.0"
         mockito_kotlin_version = "2.1.0"
+        mockk_version = "1.12.0"
+        espresso_version = "3.4.0"
         assertj_version = "3.11.1"
         android_arch_test = "2.1.0"
         room_version = "2.3.0"
