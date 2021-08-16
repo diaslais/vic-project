@@ -141,14 +141,20 @@ class MainScreenFragment : Fragment(), SearchView.OnQueryTextListener {
                 genreFilter(selectedGenre!!)
             }
         }
-        sharedViewModel.searchMovieFromApi(query, binding.ivSearchNotFound, binding.vpMovies)
+        sharedViewModel.searchMovieFromApi(
+            query,
+            binding.ivSearchNotFound,
+            binding.vpMovies,
+            binding.tvSearchNotFound,
+            binding.tvSearchNotFoundDescription
+        )
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
         if (query != null) {
             movieSearch(query)
         }
-        return false
+        return true
     }
 
     override fun onQueryTextChange(query: String?): Boolean {
@@ -157,6 +163,7 @@ class MainScreenFragment : Fragment(), SearchView.OnQueryTextListener {
         if (query.isNullOrEmpty()) {
             searchMode = false
             setMoviesAndFavorites()
+            sharedViewModel.initializeLists()
             binding.tabLayout.visibility = View.VISIBLE
             binding.vpMovies.isUserInputEnabled = true
             binding.ivGreenView.visibility = View.INVISIBLE
@@ -173,7 +180,7 @@ class MainScreenFragment : Fragment(), SearchView.OnQueryTextListener {
             binding.tvBack.visibility = View.VISIBLE
             searchPlate.setBackgroundResource(R.drawable.searchview_background_green)
         }
-        return false
+        return true
     }
 
     private fun genreFilter(genre: String) {

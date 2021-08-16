@@ -3,6 +3,7 @@ package com.laisd.moviesapp.presentation
 import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -183,28 +184,32 @@ class SharedViewModel(
         _genreTitles.value = titles
     }
 
-    fun searchMovieFromApi(query: String, imageView: ImageView, viewPager2: ViewPager2) {
+    fun searchMovieFromApi(query: String, imageView: ImageView, viewPager2: ViewPager2, tv: TextView, tvDescription: TextView) {
         searchMovieUseCase.execute(query)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ filteredMovies ->
                 _searchFromApi.value = filteredMovies
                 if (_searchFromApi.value.isNullOrEmpty()) {
-                    movieNotFound(imageView, viewPager2)
+                    movieNotFound(imageView, viewPager2, tv, tvDescription)
                 } else {
-                    movieFound(imageView, viewPager2)
+                    movieFound(imageView, viewPager2, tv, tvDescription)
                 }
             }, Throwable::printStackTrace).let { compositeDisposable.add(it) }
     }
 
-    private fun movieFound(imageView: ImageView, viewPager2: ViewPager2) {
+    private fun movieFound(imageView: ImageView, viewPager2: ViewPager2, tv: TextView, tvDescription: TextView) {
         viewPager2.visibility = View.VISIBLE
         imageView.visibility = View.INVISIBLE
+        tv.visibility = View.INVISIBLE
+        tvDescription.visibility = View.INVISIBLE
     }
 
-    private fun movieNotFound(imageView: ImageView, viewPager2: ViewPager2) {
+    private fun movieNotFound(imageView: ImageView, viewPager2: ViewPager2, tv: TextView, tvDescription: TextView) {
         viewPager2.visibility = View.INVISIBLE
         imageView.visibility = View.VISIBLE
+        tv.visibility = View.VISIBLE
+        tvDescription.visibility = View.VISIBLE
     }
 
     fun filterByGenreFromApi(genre: String) {
