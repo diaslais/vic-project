@@ -15,12 +15,13 @@ import com.laisd.moviesapp.domain.model.Movie
 import com.laisd.moviesapp.presentation.SharedViewModel
 import com.laisd.moviesapp.presentation.mainscreen.adapter.GenresFilterAdapter
 import com.laisd.moviesapp.presentation.mainscreen.adapter.ViewPagerAdapter
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainScreenFragment : Fragment(), SearchView.OnQueryTextListener {
     private var _binding: FragmentMainScreenBinding? = null
     private val binding get() = _binding!!
-    private val sharedViewModel by viewModel<SharedViewModel>()
+    private val sharedViewModel by sharedViewModel<SharedViewModel>()
     private lateinit var viewPagerAdapter: ViewPagerAdapter
     private lateinit var titles: List<String>
     private lateinit var genresAdapter: GenresFilterAdapter
@@ -155,16 +156,6 @@ class MainScreenFragment : Fragment(), SearchView.OnQueryTextListener {
     override fun onQueryTextChange(query: String?): Boolean {
         val searchPlate: View =
             binding.svSearchMovie.findViewById(androidx.appcompat.R.id.search_plate)
-        if (query != null) {
-            searchMode = true
-            movieSearch(query)
-            binding.tabLayout.visibility = View.INVISIBLE
-            binding.vpMovies.isUserInputEnabled = false
-            binding.ivGreenView.visibility = View.VISIBLE
-            binding.tvSearchMode.visibility = View.VISIBLE
-            binding.tvBack.visibility = View.VISIBLE
-            searchPlate.setBackgroundResource(R.drawable.searchview_background_green)
-        }
         if (query.isNullOrEmpty()) {
             searchMode = false
             setMoviesAndFavorites()
@@ -174,6 +165,15 @@ class MainScreenFragment : Fragment(), SearchView.OnQueryTextListener {
             binding.tvSearchMode.visibility = View.INVISIBLE
             binding.tvBack.visibility = View.INVISIBLE
             searchPlate.setBackgroundResource(R.drawable.searchview_background)
+        } else {
+            searchMode = true
+            movieSearch(query)
+            binding.tabLayout.visibility = View.INVISIBLE
+            binding.vpMovies.isUserInputEnabled = false
+            binding.ivGreenView.visibility = View.VISIBLE
+            binding.tvSearchMode.visibility = View.VISIBLE
+            binding.tvBack.visibility = View.VISIBLE
+            searchPlate.setBackgroundResource(R.drawable.searchview_background_green)
         }
         return false
     }
@@ -205,6 +205,7 @@ class MainScreenFragment : Fragment(), SearchView.OnQueryTextListener {
         sharedViewModel.movieFoundBySearchMode(searchMode)
 
         sharedViewModel.favoriteClicked(movie.id)
+
         if (sharedViewModel.movieIsFavorite(movie.id)) {
             sendToast(getString(R.string.removido))
         } else {
@@ -218,7 +219,7 @@ class MainScreenFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private fun navigateToMovieDetails(movieId: Int) {
         view?.findNavController()?.navigate(
-            MainScreenFragmentDirections.actionMainScreenFragmentToMovieDetailsFragment(movieId)
+            MainScreenFragmentDirections.actionMainScreenFragmentToMovieDetailsFragment(movieId, searchMode, selectedGenre)
         )
     }
 

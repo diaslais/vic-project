@@ -13,12 +13,14 @@ import com.laisd.moviesapp.domain.model.MovieDetail
 import com.laisd.moviesapp.presentation.SharedViewModel
 import com.laisd.moviesapp.presentation.moviedetails.adapter.CastMembersAdapter
 import com.laisd.moviesapp.presentation.moviedetails.adapter.MovieGenresAdapter
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MovieDetailsFragment : Fragment() {
     private var _binding: FragmentMovieDetailsBinding? = null
     private val binding get() = _binding!!
-    private val sharedViewModel by viewModel<SharedViewModel>()
+    private val sharedViewModel by sharedViewModel<SharedViewModel>()
+    private lateinit var args: MovieDetailsFragmentArgs
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,7 +33,7 @@ class MovieDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val args = MovieDetailsFragmentArgs.fromBundle(requireArguments())
+        args = MovieDetailsFragmentArgs.fromBundle(requireArguments())
 
         binding.ibBack.setOnClickListener {
             activity?.onBackPressed()
@@ -57,6 +59,9 @@ class MovieDetailsFragment : Fragment() {
     }
 
     private fun favoriteClicked(movieId: Int) {
+        sharedViewModel.movieFoundByGenreFilter(args.genre)
+        sharedViewModel.movieFoundBySearchMode(args.searchMode)
+
         sharedViewModel.favoriteClicked(movieId)
         if (sharedViewModel.movieIsFavorite(movieId)) {
             sendToast(getString(R.string.removido))

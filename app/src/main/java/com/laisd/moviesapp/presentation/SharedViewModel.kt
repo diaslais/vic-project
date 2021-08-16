@@ -32,6 +32,7 @@ class SharedViewModel(
     private val compositeDisposable = CompositeDisposable()
 
     init {
+        println("INICIA VIEWMODEL")
         getPopularMovies()
         getFavoriteMovies()
         getGenres()
@@ -165,14 +166,19 @@ class SharedViewModel(
     private var movieFromGenreFilter: String? = null
 
     fun favoriteClicked(movieId: Int) {
+        println("SEARCHMODE: $movieFromSearchMode")
+        println("GENRE: $movieFromGenreFilter")
+
         if (movieIsFavorite(movieId)) {
             val movie = _favoriteMovies.value?.find { it.id == movieId }
             movie?.let { deleteFavorite(it) }
         } else {
             if (movieFromSearchMode) {
+                println("SEARCH FROM API ${_searchFromApi.value}")
                 val movie = _searchFromApi.value?.find { it.id == movieId }
                 movie?.let { addFavorite(it) }
             } else if (movieFromGenreFilter != null) {
+                println("FILTER BY GENRE ${_moviesByGenreFromApi.value}")
                 val movie = _moviesByGenreFromApi.value?.find { it.id == movieId }
                 movie?.let { addFavorite(it) }
             } else {

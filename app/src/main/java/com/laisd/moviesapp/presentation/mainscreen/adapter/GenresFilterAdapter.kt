@@ -51,6 +51,10 @@ class GenresFilterAdapter(
         }
 
         holder.btnGenre.setOnClickListener { btnGenre ->
+            if (currentGenrePosition != position) {
+                currentGenrePosition?.let { notifyItemChanged(it) }
+                currentGenrePosition = position
+            }
             if (isSelected) {
                 btnGenre.setBackgroundResource(R.drawable.genre_background_gray)
                 (btnGenre as Button).setTextColor(getColor(context, R.color.gray3))
@@ -58,18 +62,12 @@ class GenresFilterAdapter(
                 genreListener(genre, position)
                 isSelected = false
                 currentGenrePosition = null
-
             } else {
                 btnGenre.setBackgroundResource(R.drawable.genre_selected)
                 (btnGenre as Button).setTextColor(getColor(context, R.color.light_gray))
                 genre = genresList[position]
                 genreListener(genre, position)
                 isSelected = true
-
-            }
-            if (currentGenrePosition != position) {
-                currentGenrePosition?.let { notifyItemChanged(it) }
-                currentGenrePosition = position
             }
         }
     }

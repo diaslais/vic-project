@@ -24,6 +24,13 @@
         <action
             android:id="@+id/action_movieDetailsFragment_to_errorFragment"
             app:destination="@id/errorFragment" />
+        <argument
+            android:name="searchMode"
+            app:argType="boolean" />
+        <argument
+            android:name="genre"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/errorFragment"
