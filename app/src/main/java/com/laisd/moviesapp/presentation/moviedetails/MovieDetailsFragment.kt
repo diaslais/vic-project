@@ -14,7 +14,6 @@ import com.laisd.moviesapp.presentation.SharedViewModel
 import com.laisd.moviesapp.presentation.moviedetails.adapter.CastMembersAdapter
 import com.laisd.moviesapp.presentation.moviedetails.adapter.MovieGenresAdapter
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MovieDetailsFragment : Fragment() {
     private var _binding: FragmentMovieDetailsBinding? = null
@@ -32,6 +31,8 @@ class MovieDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        sharedViewModel.initializeLists()
 
         args = MovieDetailsFragmentArgs.fromBundle(requireArguments())
 

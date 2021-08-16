@@ -14,6 +14,8 @@ import com.laisd.moviesapp.domain.model.Genre
 import com.laisd.moviesapp.domain.model.Movie
 import com.laisd.moviesapp.domain.model.MovieDetail
 import com.laisd.moviesapp.domain.usecase.*
+import com.laisd.moviesapp.domain.usecase.base.SingleByIdUseCase
+import com.laisd.moviesapp.domain.usecase.base.SingleUseCase
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -29,14 +31,8 @@ class SharedViewModel(
     private val getMoviesByGenreUseCase: GetMoviesByGenreUseCase,
     private val searchMovieUseCase: SearchMovieUseCase
 ) : ViewModel() {
-    private val compositeDisposable = CompositeDisposable()
 
-    init {
-        println("INICIA VIEWMODEL")
-        getPopularMovies()
-        getFavoriteMovies()
-        getGenres()
-    }
+    private val compositeDisposable = CompositeDisposable()
 
     private val _popularMovies = MutableLiveData<List<Movie>>()
     val popularMovies: LiveData<List<Movie>> = _popularMovies
@@ -65,27 +61,21 @@ class SharedViewModel(
     private val _searchFromApi = MutableLiveData<List<Movie>>()
     val searchFromApi: LiveData<List<Movie>> = _searchFromApi
 
-
-    fun getPopularMovies() {
-        getMoviesUseCase.execute()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                it?.let { _popularMovies.value = it }
-            }, Throwable::printStackTrace).let {
-                compositeDisposable.add(it)
-            }
+    fun initializeLists() {
+        getMovieList(getMoviesUseCase, _popularMovies)
+        getMovieList(getFavoritesUseCase, _favoriteMovies)
+        getGenres()
     }
 
-    fun getFavoriteMovies() {
-        getFavoritesUseCase.execute()
+    private fun getMovieList(
+        useCase: SingleUseCase<List<Movie>>,
+        movieList: MutableLiveData<List<Movie>>
+    ) {
+        useCase.execute()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ favoriteMovies ->
-                _favoriteMovies.postValue(favoriteMovies)
-            }, Throwable::printStackTrace).let {
-                compositeDisposable.add(it)
-            }
+            .subscribe({ it?.let { movieList.value = it } }, Throwable::printStackTrace)
+            .let { compositeDisposable.add(it) }
     }
 
     private fun getGenres() {
@@ -99,32 +89,20 @@ class SharedViewModel(
 
     fun setMovieDetail(movieId: Int) {
         if (movieIsFavorite(movieId)) {
-            getMovieDetailFromDataBase(movieId) { _movieDetail.postValue(it) }
+            getMovieDetail(movieId, getFavoriteDetailUseCase) { _movieDetail.postValue(it) }
         } else {
-            getMovieDetailFromApi(movieId) { _movieDetail.postValue(it) }
+            getMovieDetail(movieId, getMovieDetailUseCase) { _movieDetail.postValue(it) }
         }
     }
 
-    private fun getMovieDetailFromApi(
+    private fun getMovieDetail(
         movieId: Int,
-        subscribeFunctionCallback: (movieDetail: MovieDetail) -> Unit
-    ) {
-        getMovieDetailUseCase.execute(movieId)
-            .subscribeOn(Schedulers.io())
-            .observeOn(Schedulers.io())
-            .subscribe(subscribeFunctionCallback, { _movieDetail.postValue(null) })
-            .let { compositeDisposable.add(it) }
-    }
-
-    private fun getMovieDetailFromDataBase(
-        movieId: Int,
-        subscribeFunctionCallback: (movieDetail: MovieDetail) -> Unit
-    ) {
-        getFavoriteDetailUseCase.execute(movieId)
-            .subscribeOn(Schedulers.io())
-            .observeOn(Schedulers.io())
-            .subscribe(subscribeFunctionCallback, Throwable::printStackTrace)
-            .let { compositeDisposable.add(it) }
+        useCase: SingleByIdUseCase<MovieDetail>,
+        subscribeFunctionCallback: (movieDetail: MovieDetail) -> Unit) {
+            useCase.execute(movieId)
+                .subscribeOn(Schedulers.io())
+                .subscribe(subscribeFunctionCallback, { _movieDetail.postValue(null) })
+                .let { compositeDisposable.add(it) }
     }
 
     fun setBackdropPoster(fragment: Fragment, movieDetail: MovieDetail, imageView: ImageView) {
@@ -166,19 +144,14 @@ class SharedViewModel(
     private var movieFromGenreFilter: String? = null
 
     fun favoriteClicked(movieId: Int) {
-        println("SEARCHMODE: $movieFromSearchMode")
-        println("GENRE: $movieFromGenreFilter")
-
         if (movieIsFavorite(movieId)) {
             val movie = _favoriteMovies.value?.find { it.id == movieId }
             movie?.let { deleteFavorite(it) }
         } else {
             if (movieFromSearchMode) {
-                println("SEARCH FROM API ${_searchFromApi.value}")
                 val movie = _searchFromApi.value?.find { it.id == movieId }
                 movie?.let { addFavorite(it) }
             } else if (movieFromGenreFilter != null) {
-                println("FILTER BY GENRE ${_moviesByGenreFromApi.value}")
                 val movie = _moviesByGenreFromApi.value?.find { it.id == movieId }
                 movie?.let { addFavorite(it) }
             } else {
@@ -189,16 +162,16 @@ class SharedViewModel(
     }
 
     private fun addFavorite(movie: Movie) {
-        getMovieDetailFromApi(movie.id) { movieDetail ->
+        getMovieDetail(movie.id, getMovieDetailUseCase) { movieDetail ->
             addFavoriteUseCase.execute(movie, movieDetail)
-            getFavoriteMovies()
+            getMovieList(getFavoritesUseCase, _favoriteMovies)
         }
     }
 
     private fun deleteFavorite(movie: Movie) {
-        getMovieDetailFromDataBase(movie.id) { movieDetail ->
+        getMovieDetail(movie.id, getFavoriteDetailUseCase) { movieDetail ->
             deleteFavoriteUseCase.execute(movie, movieDetail)
-            getFavoriteMovies()
+            getMovieList(getFavoritesUseCase, _favoriteMovies)
         }
     }
 
@@ -255,7 +228,7 @@ class SharedViewModel(
         val filteredList = arrayListOf<Movie>()
         _moviesByGenreFromFavorites.postValue(filteredList)
         _favoriteMovies.value?.forEach { movie ->
-            getMovieDetailFromDataBase(movie.id) { movieDetail ->
+            getMovieDetail(movie.id, getFavoriteDetailUseCase) { movieDetail ->
                 movieDetail.genres.forEach { movieDetailGenre ->
                     if (movieDetailGenre == genre) {
                         filteredList.add(movie)
@@ -270,7 +243,7 @@ class SharedViewModel(
         val searchFilteredByGenre = arrayListOf<Movie>()
         _moviesByGenreInSearchMode.postValue(searchFilteredByGenre)
         _searchFromApi.value?.forEach { movieFromSearch ->
-            getMovieDetailFromApi(movieFromSearch.id) { movieDetailFromSearch ->
+            getMovieDetail(movieFromSearch.id, getMovieDetailUseCase) { movieDetailFromSearch ->
                 movieDetailFromSearch.genres.forEach { movieDetailGenre ->
                     if (movieDetailGenre == genre) {
                         searchFilteredByGenre.add(movieFromSearch)

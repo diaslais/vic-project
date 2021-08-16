@@ -16,7 +16,6 @@ import com.laisd.moviesapp.presentation.SharedViewModel
 import com.laisd.moviesapp.presentation.mainscreen.adapter.GenresFilterAdapter
 import com.laisd.moviesapp.presentation.mainscreen.adapter.ViewPagerAdapter
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainScreenFragment : Fragment(), SearchView.OnQueryTextListener {
     private var _binding: FragmentMainScreenBinding? = null
@@ -44,8 +43,7 @@ class MainScreenFragment : Fragment(), SearchView.OnQueryTextListener {
             GenresFilterAdapter(requireContext(), selectedGenrePosition, ::genreClickListener)
 
         if (!searchMode) {
-            sharedViewModel.getPopularMovies()
-            sharedViewModel.getFavoriteMovies()
+            sharedViewModel.initializeLists()
         }
 
         setSearchView(binding.svSearchMovie)
@@ -219,7 +217,11 @@ class MainScreenFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private fun navigateToMovieDetails(movieId: Int) {
         view?.findNavController()?.navigate(
-            MainScreenFragmentDirections.actionMainScreenFragmentToMovieDetailsFragment(movieId, searchMode, selectedGenre)
+            MainScreenFragmentDirections.actionMainScreenFragmentToMovieDetailsFragment(
+                movieId,
+                searchMode,
+                selectedGenre
+            )
         )
     }
 
