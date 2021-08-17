@@ -12,9 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:name=".di.App"
-        android:theme="@style/Theme.MoviesApp"
-        android:networkSecurityConfig="@xml/network_security_config">
-        <activity android:name=".presentation.MainActivity">
+        android:theme="@style/Theme.MoviesApp">
+        <activity
+            android:name=".presentation.MainActivity"
+            android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

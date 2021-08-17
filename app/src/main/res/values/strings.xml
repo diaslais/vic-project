@@ -7,9 +7,12 @@
     <string name="elenco">Elenco</string>
     <string name="avaliacao">Avaliação \ndos usuários</string>
     <string name="modo_pesquisa">Modo pesquisa</string>
-    <string name="sistema_falhou">O sistema falhou</string>
-    <string name="mensagem_falha">Por algum motivo, não foi possível processar com essa solicitação. Por favor, tente novamente.</string>
     <string name="tentar_novamente">Tentar novamente</string>
     <string name="filme_nao_existe">Esse filme não existe</string>
     <string name="mensagem_nao_encontrado">Não conseguimos encontrar o filme que voce procura. Por favor, refaça sua busca.</string>
+    <string name="removido">Removido dos favoritos</string>
+    <string name="adicionado">Adicionado aos favoritos</string>
+    <string name="o_sistema_falhou">O sistema falhou</string>
+    <string name="error_description">Por algum motivo, não foi possível processar com essa solicitação. Por favor, tente novamente.</string>
+    <string name="voltar_ao_in_cio">Voltar ao início</string>
 </resources>

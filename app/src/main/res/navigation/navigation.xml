@@ -16,10 +16,29 @@
     </fragment>
     <fragment
         android:id="@+id/movieDetailsFragment"
-        android:name="com.laisd.moviesapp.presentation.moviedetail.MovieDetailsFragment"
+        android:name="com.laisd.moviesapp.presentation.moviedetails.MovieDetailsFragment"
         android:label="MovieDetailsFragment" >
         <argument
             android:name="movieId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_movieDetailsFragment_to_errorFragment"
+            app:destination="@id/errorFragment" />
+        <argument
+            android:name="searchMode"
+            app:argType="boolean" />
+        <argument
+            android:name="genre"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/errorFragment"
+        android:name="com.laisd.moviesapp.presentation.moviedetails.ErrorFragment"
+        android:label="fragment_error"
+        tools:layout="@layout/fragment_error" >
+        <action
+            android:id="@+id/action_errorFragment_to_movieDetailsFragment"
+            app:destination="@id/movieDetailsFragment" />
     </fragment>
 </navigation>
