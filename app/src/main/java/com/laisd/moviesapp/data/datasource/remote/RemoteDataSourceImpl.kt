@@ -7,6 +7,13 @@ import com.laisd.moviesapp.data.model.remote.MovieDetailResponse
 import com.laisd.moviesapp.data.model.remote.MoviesListResponse
 import io.reactivex.rxjava3.core.Single
 
+/**
+ * This data source is responsible for communicating with the API endpoints.
+ *
+ * The repository will communicate with this data source's interface, so it doesn't
+ * know directly the frameworks used to access data.
+ * **/
+
 class RemoteDataSourceImpl(
     private val moviesService: MoviesService,
     private val movieDetailService: MovieDetailService,

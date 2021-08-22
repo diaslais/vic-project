@@ -5,6 +5,11 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.laisd.moviesapp.domain.model.CastMember
 
+/**
+ * Type converters are methods that tell Room how to convert custom types to and from known
+ * types that Room can persist.
+ * **/
+
 class Converters {
 
     @TypeConverter

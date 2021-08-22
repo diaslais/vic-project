@@ -6,6 +6,15 @@ import com.laisd.moviesapp.data.model.remote.MovieDetailResponse
 import com.laisd.moviesapp.data.model.remote.MoviesListResponse
 import io.reactivex.rxjava3.core.Single
 
+/**
+ * Reduce dependency between classes through an interface (abstraction),
+ * which brings more flexibility to make changes.
+ *
+ * DIP - Dependency Inversion Principle
+ * High-level modules should not depend on low-level modules. Both should depend on the abstraction.
+ * Abstractions should not depend on details. Details should depend on abstractions.
+ * **/
+
 interface RemoteDataSource {
 
     fun getMovies(apiKey: String, language: String): Single<MoviesListResponse>

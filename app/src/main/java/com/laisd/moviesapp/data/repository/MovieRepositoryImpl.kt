@@ -10,8 +10,11 @@ import com.laisd.moviesapp.domain.repository.MovieRepository
 import io.reactivex.rxjava3.core.Single
 
 /**
- * This repository is responsible for fetching
- * data from server or db
+ * This repository is responsible for fetching data from remote data source and return
+ * mapped data.
+ *
+ * It's the implementation of the MovieRepository interface (from domain layer), which connects the
+ * data layer and the domain layer.
  * **/
  
 class MovieRepositoryImpl(
