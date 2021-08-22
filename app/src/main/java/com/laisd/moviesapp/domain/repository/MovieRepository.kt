@@ -18,7 +18,7 @@ interface MovieRepository {
 
     fun getMovies(apiKey: String, language: String): Single<List<Movie>>
 
-    fun getMovieDetail(movieId: Int, apiKey: String, language: String, appendToResponse: String): Single<MovieDetail>
+    fun getMovieDetail(movieId: String, apiKey: String, language: String, appendToResponse: String): Single<MovieDetail>
 
     fun getGenres(apiKey: String, language: String): Single<List<Genre>>
 
