@@ -19,13 +19,13 @@ class RemoteDataSourceImpl(
         moviesService.getPopularMoviesResponse(apiKey, language)
 
     override fun getMovieDetail(
-        movieId: Int?,
+        movieId: String,
         apiKey: String,
         language: String,
         appendToResponse: String
     ): Single<MovieDetailResponse> =
         movieDetailService.getMovieDetailResponse(
-            movieId.toString(),
+            movieId,
             apiKey,
             language,
             appendToResponse

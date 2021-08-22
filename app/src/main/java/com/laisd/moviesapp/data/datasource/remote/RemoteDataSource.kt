@@ -10,7 +10,7 @@ interface RemoteDataSource {
 
     fun getMovies(apiKey: String, language: String): Single<MoviesListResponse>
 
-    fun getMovieDetail(movieId: Int?, apiKey: String, language: String, appendToResponse: String): Single<MovieDetailResponse>
+    fun getMovieDetail(movieId: String, apiKey: String, language: String, appendToResponse: String): Single<MovieDetailResponse>
 
     fun getGenres(apiKey: String, language: String): Single<GenreListResponse>
 
