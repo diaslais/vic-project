@@ -12,7 +12,7 @@ Project made during the Android development course ViC - Vitoria Code by Picpay.
 - Clicking on a movie loads details about that movie
 - An error feedback is given if the API data load fails
 - User can search for a specific movie through search mode or filter the movie list by selecting a genre
-- Movies can be added to favorites and the user can access a list with their favorite movies
+- Movies can be added to favorites and the user can access a list with of favorite movies
 
 ![Movies](screenshots/favorites.png "Main screen with list of movies")
 ![Movie Detail](screenshots/moviedetail.png "Details of a specific movie")
@@ -25,7 +25,7 @@ Project made during the Android development course ViC - Vitoria Code by Picpay.
 - [Navigation component] and [Safe Args] to handle navigating and passing data between fragments
 - [ViewModel] being used so data survives configuration changes (like screen rotations)
 - [LiveData] to encapsulate data that will be observed by the fragments
-- [RxJava] used to handle streams of data (from the API and from the database to the viewmodel)
+- [RxJava] is used to handle streams of data (from the API and from the database to the viewmodel)
 - [Retrofit] to make the API call and [Gson] to convert json data to java objects
 - [Room] to save the user's favorite movies in a local database
 - [Glide] for image loading from url
@@ -46,7 +46,7 @@ Project made during the Android development course ViC - Vitoria Code by Picpay.
 
 The application has been organized into the following layers:
 - **presentation**: classes that concern the UI and presentation logic, the activity, fragments, adapters and viewmodel.
-- **domain**: contains the business logic, usecases, data classes and the repository abstraction.
-- **data**: interacts with data sources (database, api calls), contains repository implementation and also maps model objects to domain objects. 
+- **domain**: contains the usecases, the repository interfaces and domain data objects.
+- **data**: interacts with data sources (database, API services), contains repository implementation and data objects (response and db objects). 
 
 ![Architecture](screenshots/structure.png "Project architecture")
