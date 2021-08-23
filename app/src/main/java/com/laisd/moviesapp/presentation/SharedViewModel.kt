@@ -32,7 +32,6 @@ class SharedViewModel(
     private val getMoviesByGenreUseCase: GetMoviesByGenreUseCase,
     private val searchMovieUseCase: SearchMovieUseCase
 ) : ViewModel() {
-
     private val compositeDisposable = CompositeDisposable()
 
     private val _popularMovies = MutableLiveData<List<Movie>>()
@@ -44,7 +43,7 @@ class SharedViewModel(
     private val _allGenres = MutableLiveData<List<Genre>>()
     val allGenres: LiveData<List<Genre>> = _allGenres
 
-    private val _movieDetail = MutableLiveData<MovieDetail?>()
+    private var _movieDetail = MutableLiveData<MovieDetail?>()
     val movieDetail: LiveData<MovieDetail?> = _movieDetail
 
     private val _genreTitles = MutableLiveData<List<String>>()
@@ -62,10 +61,14 @@ class SharedViewModel(
     private val _searchFromApi = MutableLiveData<List<Movie>>()
     val searchFromApi: LiveData<List<Movie>> = _searchFromApi
 
+    private val _movieDetailError = MutableLiveData<Boolean>()
+    val movieDetailError: LiveData<Boolean> = _movieDetailError
+
     fun initializeLists() {
         getMovieList(getMoviesUseCase, _popularMovies)
         getMovieList(getFavoritesUseCase, _favoriteMovies)
         getGenres()
+        _movieDetailError.value = false
     }
 
     private fun getMovieList(
@@ -99,11 +102,12 @@ class SharedViewModel(
     private fun getMovieDetail(
         movieId: Int,
         useCase: SingleByIdUseCase<MovieDetail>,
-        subscribeFunctionCallback: (movieDetail: MovieDetail) -> Unit) {
-            useCase.execute(movieId)
-                .subscribeOn(Schedulers.io())
-                .subscribe(subscribeFunctionCallback, { _movieDetail.postValue(null) })
-                .let { compositeDisposable.add(it) }
+        subscribeFunctionCallback: (movieDetail: MovieDetail) -> Unit
+    ) {
+        useCase.execute(movieId)
+            .subscribeOn(Schedulers.io())
+            .subscribe(subscribeFunctionCallback, { _movieDetailError.postValue(true) })
+            .let { compositeDisposable.add(it) }
     }
 
     fun setBackdropPoster(fragment: Fragment, movieDetail: MovieDetail, imageView: ImageView) {
@@ -184,7 +188,13 @@ class SharedViewModel(
         _genreTitles.value = titles
     }
 
-    fun searchMovieFromApi(query: String, imageView: ImageView, viewPager2: ViewPager2, tv: TextView, tvDescription: TextView) {
+    fun searchMovieFromApi(
+        query: String,
+        imageView: ImageView,
+        viewPager2: ViewPager2,
+        tv: TextView,
+        tvDescription: TextView
+    ) {
         searchMovieUseCase.execute(query)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -198,14 +208,24 @@ class SharedViewModel(
             }, Throwable::printStackTrace).let { compositeDisposable.add(it) }
     }
 
-    private fun movieFound(imageView: ImageView, viewPager2: ViewPager2, tv: TextView, tvDescription: TextView) {
+    private fun movieFound(
+        imageView: ImageView,
+        viewPager2: ViewPager2,
+        tv: TextView,
+        tvDescription: TextView
+    ) {
         viewPager2.visibility = View.VISIBLE
         imageView.visibility = View.INVISIBLE
         tv.visibility = View.INVISIBLE
         tvDescription.visibility = View.INVISIBLE
     }
 
-    private fun movieNotFound(imageView: ImageView, viewPager2: ViewPager2, tv: TextView, tvDescription: TextView) {
+    private fun movieNotFound(
+        imageView: ImageView,
+        viewPager2: ViewPager2,
+        tv: TextView,
+        tvDescription: TextView
+    ) {
         viewPager2.visibility = View.INVISIBLE
         imageView.visibility = View.VISIBLE
         tv.visibility = View.VISIBLE

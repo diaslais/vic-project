@@ -1,14 +1,19 @@
 package com.laisd.moviesapp.presentation.moviedetails
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.navigation.NavController
+import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
 import com.laisd.moviesapp.R
 import com.laisd.moviesapp.databinding.FragmentMovieDetailsBinding
+import com.laisd.moviesapp.domain.model.Movie
 import com.laisd.moviesapp.domain.model.MovieDetail
 import com.laisd.moviesapp.presentation.SharedViewModel
 import com.laisd.moviesapp.presentation.moviedetails.adapter.CastMembersAdapter
@@ -32,26 +37,25 @@ class MovieDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        args = MovieDetailsFragmentArgs.fromBundle(requireArguments())
+
         sharedViewModel.initializeLists()
 
-        args = MovieDetailsFragmentArgs.fromBundle(requireArguments())
+        sharedViewModel.movieDetailError.observe(viewLifecycleOwner) { error ->
+            if (error) navigateToError()
+        }
 
         binding.ibBack.setOnClickListener {
             activity?.onBackPressed()
         }
 
         sharedViewModel.favoriteMovies.observe(viewLifecycleOwner) {
-            sharedViewModel.setMovieDetail(args.movieId)
-
             sharedViewModel.movieDetail.observe(viewLifecycleOwner) { movieDetail ->
-                if (movieDetail == null) {
-                    navigateToError()
-                } else {
-                    setHeartIcon(args.movieId)
-                    setMovieInfo(movieDetail)
-                    binding.rvCastMembers.adapter = CastMembersAdapter(movieDetail.cast)
-                }
+                setHeartIcon(args.movieId)
+                setMovieInfo(movieDetail!!)
+                binding.rvCastMembers.adapter = CastMembersAdapter(movieDetail.cast)
             }
+            sharedViewModel.setMovieDetail(args.movieId)
         }
 
         binding.ibMovieDetailFavorite.setOnClickListener {
