@@ -25,7 +25,7 @@ class FavoriteMapperTest {
         filmCertification = "16",
         runtime = "1h 36min",
         genres = arrayListOf("Drama", "Thriller", "Crime"),
-        synopsis = "Um motorista habilidoso é dublê em Hollywood e piloto de fuga em assaltos. Quando aceita ajudar o marido de sua vizinha Irene, fica na mira dos homens mais perigosos de LA. Mas o trabalho dá errado, e a única forma de garantir a segurança de Irene e do filho é fazer o que ele faz de melhor: dirigir.",
+        synopsis = "Um motorista habilidoso é dublê em Hollywood e piloto de fuga em assaltos.",
         cast = arrayListOf(
             CastMember(
                 name = "Ryan Gosling",
@@ -50,7 +50,7 @@ class FavoriteMapperTest {
         filmCertification = "10",
         runtime = "2h 49min",
         genres = arrayListOf("Aventura", "Drama", "Ficção científica"),
-        synopsis = "As reservas naturais da Terra estão chegando ao fim e um grupo de astronautas recebe a missão de verificar possíveis planetas para receberem a população mundial, possibilitando a continuação da espécie.Cooper é chamado para liderar o grupo e aceita a missão sabendo que pode nunca mais ver os filhos.Ao lado de Brand, Jenkins e Doyle ele seguirá em busca de um novo lar.",
+        synopsis = "As reservas naturais da Terra estão chegando ao fim e um grupo de astronautas recebe a missão de verificar possíveis planetas.",
         cast = arrayListOf(
             CastMember(
                 name = "Matthew McConaughey",
@@ -93,7 +93,7 @@ class FavoriteMapperTest {
         filmCertification = "16",
         runtime = "1h 36min",
         genres = arrayListOf("Drama", "Thriller", "Crime"),
-        synopsis = "Um motorista habilidoso é dublê em Hollywood e piloto de fuga em assaltos. Quando aceita ajudar o marido de sua vizinha Irene, fica na mira dos homens mais perigosos de LA. Mas o trabalho dá errado, e a única forma de garantir a segurança de Irene e do filho é fazer o que ele faz de melhor: dirigir.",
+        synopsis = "Um motorista habilidoso é dublê em Hollywood e piloto de fuga em assaltos.",
         cast = arrayListOf(
             CastMember(
                 name = "Ryan Gosling",

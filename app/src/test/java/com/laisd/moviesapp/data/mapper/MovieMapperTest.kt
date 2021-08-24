@@ -68,7 +68,7 @@ class MovieMapperTest {
             GenreResponse(53, "Thriller"),
             GenreResponse(80, "Crime")
         ),
-        synopsis = "Um motorista habilidoso é dublê em Hollywood e piloto de fuga em assaltos. Quando aceita ajudar o marido de sua vizinha Irene, fica na mira dos homens mais perigosos de LA. Mas o trabalho dá errado, e a única forma de garantir a segurança de Irene e do filho é fazer o que ele faz de melhor: dirigir.",
+        synopsis = "Um motorista habilidoso é dublê em Hollywood e piloto de fuga em assaltos.",
         credits = CreditsResponse(
             arrayListOf(
                 CastMemberResponse(
@@ -96,7 +96,7 @@ class MovieMapperTest {
         filmCertification = "16",
         runtime = "1h 36min",
         genres = arrayListOf("Drama", "Thriller", "Crime"),
-        synopsis = "Um motorista habilidoso é dublê em Hollywood e piloto de fuga em assaltos. Quando aceita ajudar o marido de sua vizinha Irene, fica na mira dos homens mais perigosos de LA. Mas o trabalho dá errado, e a única forma de garantir a segurança de Irene e do filho é fazer o que ele faz de melhor: dirigir.",
+        synopsis = "Um motorista habilidoso é dublê em Hollywood e piloto de fuga em assaltos.",
         cast = arrayListOf(
             CastMember(
                 name = "Ryan Gosling",
