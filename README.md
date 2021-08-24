@@ -6,6 +6,17 @@ An Android app that allows you to access information about movies and select you
 
 Project made during the Android development course ViC - Vitoria Code by Picpay.
 
+### How to run the app
+
+Register and get your (free) API key at [TMDb]. 
+Open the ```local.properties``` file and paste:
+
+```apiKey=insert your api key here```
+
+Then run the app :)
+
+[TMDb]: https://developers.themoviedb.org/3/
+
 ## Implementation
 
 - When opened, the app loads a list of the most popular movies
