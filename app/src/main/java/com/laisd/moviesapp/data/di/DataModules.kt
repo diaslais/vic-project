@@ -1,4 +1,4 @@
-package com.laisd.moviesapp.di
+package com.laisd.moviesapp.data.di
 
 import androidx.room.Room
 import com.google.gson.GsonBuilder
@@ -14,52 +14,16 @@ import com.laisd.moviesapp.data.repository.FavoritesRepositoryImpl
 import com.laisd.moviesapp.data.repository.MovieRepositoryImpl
 import com.laisd.moviesapp.domain.repository.FavoritesRepository
 import com.laisd.moviesapp.domain.repository.MovieRepository
-import com.laisd.moviesapp.domain.usecase.*
-import com.laisd.moviesapp.presentation.SharedViewModel
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidApplication
-import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
-val presentationModules = module {
-    viewModel {
-        SharedViewModel(
-            getMoviesUseCase = get(),
-            getMovieDetailUseCase = get(),
-            getFavoritesUseCase = get(),
-            getFavoriteDetailUseCase = get(),
-            addFavoriteUseCase = get(),
-            deleteFavoriteUseCase = get(),
-            getGenresUseCase = get(),
-            getMoviesByGenreUseCase = get(),
-            searchMovieUseCase = get()
-        )
-    }
-}
-
-val domainModules = module {
-    factory { GetMoviesUseCase(movieRepository = get()) }
-    factory { GetMovieDetailUseCase(movieRepository = get()) }
-    factory { GetFavoritesUseCase(favoritesRepository = get()) }
-    factory { GetFavoriteDetailUseCase(favoritesRepository = get()) }
-    factory { AddFavoriteUseCase(favoritesRepository = get()) }
-    factory { DeleteFavoriteUseCase(favoritesRepository = get()) }
-    factory { GetGenresUseCase(movieRepository = get()) }
-    factory { GetMoviesByGenreUseCase(movieRepository = get()) }
-    factory { SearchMovieUseCase(movieRepository = get()) }
-}
-
 val dataModules = module {
     factory<MovieRepository> { MovieRepositoryImpl(movieMapper = get(), remoteDataSource = get()) }
-    factory<FavoritesRepository> {
-        FavoritesRepositoryImpl(
-            localDataSource = get(),
-            favoriteMapper = get()
-        )
-    }
+    factory<FavoritesRepository> { FavoritesRepositoryImpl(localDataSource = get(), favoriteMapper = get()) }
     factory { FavoriteMapper() }
     factory { MovieMapper() }
     factory<LocalDataSource> { LocalDataSourceImpl(movieDao = get()) }
@@ -79,7 +43,7 @@ val dataBaseModules = module {
         Room.databaseBuilder(androidApplication(), MovieDataBase::class.java, "moviesdatabase")
             .build()
     }
-    single { get<MovieDataBase>().movieDao() }
+    factory { get<MovieDataBase>().movieDao() }
 }
 
 val networkModules = module {
@@ -91,7 +55,7 @@ val networkModules = module {
 
     single {
         Retrofit.Builder()
-            .baseUrl("https://api.themoviedb.org/3/") //colocar no build config
+            .baseUrl("https://api.themoviedb.org/3/")
             .client(get())
             .addConverterFactory(GsonConverterFactory.create(get()))
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
