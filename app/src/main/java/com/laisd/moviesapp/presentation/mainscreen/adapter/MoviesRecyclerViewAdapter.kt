@@ -14,7 +14,7 @@ import com.laisd.moviesapp.domain.model.Movie
 class MoviesRecyclerViewAdapter(
     private val isFavorite: (movieId: Int) -> Boolean,
     private val favoriteListener: (movie: Movie) -> Unit,
-    private val clickListener: (movieId: Int) -> Unit
+    private val navigateToMovieDetails: (movieId: Int) -> Unit
 ) :
     RecyclerView.Adapter<MoviesRecyclerViewAdapter.MoviesViewHolder>() {
     var movieList = emptyList<Movie>()
@@ -55,7 +55,9 @@ class MoviesRecyclerViewAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesViewHolder =
-        MoviesViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false))
+        MoviesViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
+        )
 
     override fun getItemCount(): Int = movieList.size
 
@@ -63,7 +65,7 @@ class MoviesRecyclerViewAdapter(
         val movie = movieList[position]
         holder.bind(movie)
         holder.itemView.setOnClickListener {
-            clickListener(movieList[position].id)
+            navigateToMovieDetails(movieList[position].id)
         }
 
         holder.ibFavorite.setOnClickListener {

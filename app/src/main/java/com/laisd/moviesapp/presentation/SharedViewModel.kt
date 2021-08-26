@@ -35,8 +35,8 @@ class SharedViewModel(
     private val _allGenres = MutableLiveData<List<Genre>>()
     val allGenres: LiveData<List<Genre>> = _allGenres
 
-    private var _movieDetail = MutableLiveData<MovieDetail?>()
-    val movieDetail: LiveData<MovieDetail?> = _movieDetail
+    private var _movieDetail = MutableLiveData<MovieDetail>()
+    val movieDetail: LiveData<MovieDetail> = _movieDetail
 
     private val _genreTitles = MutableLiveData<List<String>>()
     val genreTitles: LiveData<List<String>> = _genreTitles

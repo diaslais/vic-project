@@ -73,13 +73,14 @@ class MainScreenFragment : Fragment(), SearchView.OnQueryTextListener {
     private fun setViewPager() {
         viewPagerAdapter = ViewPagerAdapter(
             sharedViewModel::movieIsFavorite,
-            ::favoriteClick,
-            ::navigateToMovieDetails
+            ::favoriteListener,
+            ::navigateToMovieDetails,
+            ::refreshScreen
         )
-        titles = listOf(getString(R.string.todos_os_filmes), getString(R.string.favoritos))
         binding.vpMovies.adapter = viewPagerAdapter
-        setMoviesAndFavorites()
+        titles = listOf(getString(R.string.todos_os_filmes), getString(R.string.favoritos))
         setTabLayout(titles)
+        setMoviesAndFavorites()
     }
 
     private fun setTabLayout(titles: List<String>) {
@@ -88,14 +89,14 @@ class MainScreenFragment : Fragment(), SearchView.OnQueryTextListener {
         }.attach()
     }
 
-    private fun genreClickListener(genre: String?, position: Int?) {
-        selectedGenre = genre
-        selectedGenrePosition = position
-        if (genre != null) {
-            genreFilter(genre)
-        } else {
-            setMoviesAndFavorites()
-            selectedGenrePosition = null
+    private fun genresRecyclerView() {
+        binding.rvGenres.adapter = genresAdapter
+        sharedViewModel.allGenres.observe(viewLifecycleOwner) {
+            sharedViewModel.genreTitles.observe(viewLifecycleOwner) { genreTitles ->
+                genresAdapter.genresList = genreTitles
+                genresAdapter.notifyDataSetChanged()
+            }
+            sharedViewModel.genreTitles()
         }
     }
 
@@ -121,17 +122,6 @@ class MainScreenFragment : Fragment(), SearchView.OnQueryTextListener {
                 viewPagerAdapter.dataSet[1] = it
                 viewPagerAdapter.notifyDataSetChanged()
             }
-        }
-    }
-
-    private fun genresRecyclerView() {
-        binding.rvGenres.adapter = genresAdapter
-        sharedViewModel.allGenres.observe(viewLifecycleOwner) {
-            sharedViewModel.genreTitles.observe(viewLifecycleOwner) { genreTitles ->
-                genresAdapter.genresList = genreTitles
-                genresAdapter.notifyDataSetChanged()
-            }
-            sharedViewModel.genreTitles()
         }
     }
 
@@ -171,9 +161,9 @@ class MainScreenFragment : Fragment(), SearchView.OnQueryTextListener {
         tvDescription: TextView
     ) {
         viewPager2.visibility = View.VISIBLE
-        imageView.visibility = View.INVISIBLE
-        tv.visibility = View.INVISIBLE
-        tvDescription.visibility = View.INVISIBLE
+        imageView.visibility = View.GONE
+        tv.visibility = View.GONE
+        tvDescription.visibility = View.GONE
     }
 
     private fun movieNotFound(
@@ -183,8 +173,11 @@ class MainScreenFragment : Fragment(), SearchView.OnQueryTextListener {
         tvDescription: TextView
     ) {
         viewPager2.visibility = View.INVISIBLE
+        imageView.setImageResource(R.drawable.imgsearch)
         imageView.visibility = View.VISIBLE
+        tv.text = getString(R.string.filme_nao_existe)
         tv.visibility = View.VISIBLE
+        tvDescription.text = getString(R.string.mensagem_nao_encontrado)
         tvDescription.visibility = View.VISIBLE
     }
 
@@ -221,6 +214,17 @@ class MainScreenFragment : Fragment(), SearchView.OnQueryTextListener {
         return true
     }
 
+    private fun genreClickListener(genre: String?, position: Int?) {
+        selectedGenre = genre
+        selectedGenrePosition = position
+        if (genre != null) {
+            genreFilter(genre)
+        } else {
+            setMoviesAndFavorites()
+            selectedGenrePosition = null
+        }
+    }
+
     private fun genreFilter(genre: String) {
         if (searchMode) {
             sharedViewModel.moviesByGenreInSearchMode.observe(viewLifecycleOwner) {
@@ -243,7 +247,7 @@ class MainScreenFragment : Fragment(), SearchView.OnQueryTextListener {
         }
     }
 
-    private fun favoriteClick(movie: Movie) {
+    private fun favoriteListener(movie: Movie) {
         sharedViewModel.movieFoundByGenreFilter(selectedGenre)
         sharedViewModel.movieFoundBySearchMode(searchMode)
 
@@ -254,6 +258,11 @@ class MainScreenFragment : Fragment(), SearchView.OnQueryTextListener {
         } else {
             sendToast(getString(R.string.adicionado))
         }
+    }
+
+    private fun refreshScreen() {
+        parentFragmentManager.beginTransaction().detach(this).commitNow()
+        parentFragmentManager.beginTransaction().attach(this).commitNow()
     }
 
     private fun sendToast(message: String) {

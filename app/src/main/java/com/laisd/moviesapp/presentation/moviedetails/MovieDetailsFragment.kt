@@ -8,7 +8,6 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.laisd.moviesapp.R
 import com.laisd.moviesapp.databinding.FragmentMovieDetailsBinding
@@ -39,29 +38,30 @@ class MovieDetailsFragment : Fragment() {
 
         sharedViewModel.initializeLists()
 
-        sharedViewModel.movieDetailError.observe(viewLifecycleOwner) { error ->
-            if (error) navigateToError()
-        }
+        sharedViewModel.movieDetailError.observe(viewLifecycleOwner) { if (it) setError() }
 
-        binding.ibBack.setOnClickListener {
-            activity?.onBackPressed()
-        }
+        binding.ibBack.setOnClickListener { activity?.onBackPressed() }
 
         sharedViewModel.favoriteMovies.observe(viewLifecycleOwner) {
             sharedViewModel.movieDetail.observe(viewLifecycleOwner) { movieDetail ->
                 setHeartIcon(args.movieId, binding.ibMovieDetailFavorite)
-                setMovieInfo(movieDetail!!)
+                setMovieInfo(movieDetail)
                 binding.rvCastMembers.adapter = CastMembersAdapter(movieDetail.cast)
             }
             sharedViewModel.setMovieDetail(args.movieId)
         }
 
-        binding.ibMovieDetailFavorite.setOnClickListener {
-            favoriteClicked(args.movieId)
-        }
+        binding.ibMovieDetailFavorite.setOnClickListener { favoriteListener(args.movieId) }
     }
 
-    private fun favoriteClicked(movieId: Int) {
+    private fun setError() {
+        binding.constraintMovieDetail.visibility = View.GONE
+        binding.constraintMovieDetailError.visibility = View.VISIBLE
+        binding.ibErrorClose.setOnClickListener { activity?.onBackPressed() }
+        binding.btnErrorTryAgain.setOnClickListener { activity?.onBackPressed() }
+    }
+
+    private fun favoriteListener(movieId: Int) {
         sharedViewModel.movieFoundByGenreFilter(args.genre)
         sharedViewModel.movieFoundBySearchMode(args.searchMode)
 
@@ -105,12 +105,6 @@ class MovieDetailsFragment : Fragment() {
             .fallback(R.drawable.ic_baseline_android_24)
             .centerCrop()
             .into(imageView)
-    }
-
-    private fun navigateToError() {
-        view?.findNavController()?.navigate(
-            MovieDetailsFragmentDirections.actionMovieDetailsFragmentToErrorFragment()
-        )
     }
 
     override fun onDestroyView() {

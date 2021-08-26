@@ -25,4 +25,100 @@
 
     </com.laisd.moviesapp.presentation.mainscreen.NestedScrollableHost>
 
+    <ImageView
+        android:id="@+id/ivMainScreenError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/imgerror"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/tvMainScreenErrorTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/tvMainScreenErrorTitle"
+        style="@style/H1Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/xlarge"
+        android:text="@string/o_sistema_falhou"
+        android:textColor="@color/gray3"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/tvMainSreenErrorDescription"
+        app:layout_constraintEnd_toEndOf="@id/ivMainScreenError"
+        app:layout_constraintStart_toStartOf="@id/ivMainScreenError"
+        app:layout_constraintTop_toBottomOf="@id/ivMainScreenError"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/tvMainSreenErrorDescription"
+        style="@style/BodyText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/small"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/xlarge"
+        android:text="@string/error_description"
+        android:textColor="@color/gray3"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/btnMainScreenErrorTryAgain"
+        app:layout_constraintEnd_toEndOf="@id/ivMainScreenError"
+        app:layout_constraintStart_toStartOf="@id/ivMainScreenError"
+        app:layout_constraintTop_toBottomOf="@id/tvMainScreenErrorTitle"
+        tools:visibility="visible" />
+
+    <Button
+        android:id="@+id/btnMainScreenErrorTryAgain"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/xxlarge"
+        android:layout_marginBottom="@dimen/xxlarge"
+        android:backgroundTint="@color/transparent"
+        android:elevation="0dp"
+        android:fontFamily="@font/lato_bold"
+        android:text="@string/tentar_novamente"
+        android:textAllCaps="false"
+        android:textColor="@color/green"
+        android:textSize="@dimen/h1_text_size"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvMainSreenErrorDescription"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/ivBtnGreenDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/tab_indicator"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/btnMainScreenErrorTryAgain"
+        app:layout_constraintStart_toStartOf="@id/btnMainScreenErrorTryAgain"
+        app:layout_constraintTop_toBottomOf="@id/btnMainScreenErrorTryAgain"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/tvEmptyFavorites"
+        style="@style/H1Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/small"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/xlarge"
+        android:text="@string/nao_ha_favoritos"
+        android:textColor="@color/gray1_30"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.36"
+        tools:visibility="visible" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
