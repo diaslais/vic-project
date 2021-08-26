@@ -1,16 +1,8 @@
 package com.laisd.moviesapp.presentation
 
-import android.view.View
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.viewpager2.widget.ViewPager2
-import com.bumptech.glide.Glide
-import com.laisd.moviesapp.R
 import com.laisd.moviesapp.domain.model.Genre
 import com.laisd.moviesapp.domain.model.Movie
 import com.laisd.moviesapp.domain.model.MovieDetail
@@ -64,6 +56,9 @@ class SharedViewModel(
     private val _movieDetailError = MutableLiveData<Boolean>()
     val movieDetailError: LiveData<Boolean> = _movieDetailError
 
+    private val _movieNotFound = MutableLiveData<Boolean>()
+    val movieNotFound: LiveData<Boolean> = _movieNotFound
+
     fun initializeLists() {
         getMovieList(getMoviesUseCase, _popularMovies)
         getMovieList(getFavoritesUseCase, _favoriteMovies)
@@ -108,25 +103,6 @@ class SharedViewModel(
             .subscribeOn(Schedulers.io())
             .subscribe(subscribeFunctionCallback, { _movieDetailError.postValue(true) })
             .let { compositeDisposable.add(it) }
-    }
-
-    fun setBackdropPoster(fragment: Fragment, movieDetail: MovieDetail, imageView: ImageView) {
-        val imageBaseUrl = "https://image.tmdb.org/t/p/w500/"
-        var pictureUrl: String? = null
-        movieDetail.backdropPoster?.let { pictureUrl = imageBaseUrl + it }
-        Glide.with(fragment)
-            .load(pictureUrl)
-            .fallback(R.drawable.ic_baseline_android_24)
-            .centerCrop()
-            .into(imageView)
-    }
-
-    fun setHeartIcon(imageButton: ImageButton, movieId: Int) {
-        if (movieIsFavorite(movieId)) {
-            imageButton.setImageResource(R.drawable.ic_baseline_favorite_24)
-        } else {
-            imageButton.setImageResource(R.drawable.ic_baseline_favorite_border_24)
-        }
     }
 
     fun movieIsFavorite(movieId: Int): Boolean {
@@ -188,48 +164,14 @@ class SharedViewModel(
         _genreTitles.value = titles
     }
 
-    fun searchMovieFromApi(
-        query: String,
-        imageView: ImageView,
-        viewPager2: ViewPager2,
-        tv: TextView,
-        tvDescription: TextView
-    ) {
+    fun searchMovieFromApi(query: String) {
         searchMovieUseCase.execute(query)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ filteredMovies ->
                 _searchFromApi.value = filteredMovies
-                if (_searchFromApi.value.isNullOrEmpty()) {
-                    movieNotFound(imageView, viewPager2, tv, tvDescription)
-                } else {
-                    movieFound(imageView, viewPager2, tv, tvDescription)
-                }
+                _movieNotFound.value = _searchFromApi.value.isNullOrEmpty()
             }, Throwable::printStackTrace).let { compositeDisposable.add(it) }
-    }
-
-    private fun movieFound(
-        imageView: ImageView,
-        viewPager2: ViewPager2,
-        tv: TextView,
-        tvDescription: TextView
-    ) {
-        viewPager2.visibility = View.VISIBLE
-        imageView.visibility = View.INVISIBLE
-        tv.visibility = View.INVISIBLE
-        tvDescription.visibility = View.INVISIBLE
-    }
-
-    private fun movieNotFound(
-        imageView: ImageView,
-        viewPager2: ViewPager2,
-        tv: TextView,
-        tvDescription: TextView
-    ) {
-        viewPager2.visibility = View.INVISIBLE
-        imageView.visibility = View.VISIBLE
-        tv.visibility = View.VISIBLE
-        tvDescription.visibility = View.VISIBLE
     }
 
     fun filterByGenreFromApi(genre: String) {

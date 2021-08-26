@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.laisd.moviesapp.R
 import com.laisd.moviesapp.databinding.FragmentMainScreenBinding
@@ -141,13 +144,48 @@ class MainScreenFragment : Fragment(), SearchView.OnQueryTextListener {
                 genreFilter(selectedGenre!!)
             }
         }
-        sharedViewModel.searchMovieFromApi(
-            query,
-            binding.ivSearchNotFound,
-            binding.vpMovies,
-            binding.tvSearchNotFound,
-            binding.tvSearchNotFoundDescription
-        )
+        sharedViewModel.movieNotFound.observe(viewLifecycleOwner) { movieNotFound ->
+            if (movieNotFound) {
+                movieNotFound(
+                    binding.ivSearchNotFound,
+                    binding.vpMovies,
+                    binding.tvSearchNotFound,
+                    binding.tvSearchNotFoundDescription
+                )
+            } else {
+                movieFound(
+                    binding.ivSearchNotFound,
+                    binding.vpMovies,
+                    binding.tvSearchNotFound,
+                    binding.tvSearchNotFoundDescription
+                )
+            }
+        }
+        sharedViewModel.searchMovieFromApi(query)
+    }
+
+    private fun movieFound(
+        imageView: ImageView,
+        viewPager2: ViewPager2,
+        tv: TextView,
+        tvDescription: TextView
+    ) {
+        viewPager2.visibility = View.VISIBLE
+        imageView.visibility = View.INVISIBLE
+        tv.visibility = View.INVISIBLE
+        tvDescription.visibility = View.INVISIBLE
+    }
+
+    private fun movieNotFound(
+        imageView: ImageView,
+        viewPager2: ViewPager2,
+        tv: TextView,
+        tvDescription: TextView
+    ) {
+        viewPager2.visibility = View.INVISIBLE
+        imageView.visibility = View.VISIBLE
+        tv.visibility = View.VISIBLE
+        tvDescription.visibility = View.VISIBLE
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {

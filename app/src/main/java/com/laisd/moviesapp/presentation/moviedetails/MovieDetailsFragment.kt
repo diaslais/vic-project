@@ -1,19 +1,17 @@
 package com.laisd.moviesapp.presentation.moviedetails
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.navigation.NavController
-import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
+import com.bumptech.glide.Glide
 import com.laisd.moviesapp.R
 import com.laisd.moviesapp.databinding.FragmentMovieDetailsBinding
-import com.laisd.moviesapp.domain.model.Movie
 import com.laisd.moviesapp.domain.model.MovieDetail
 import com.laisd.moviesapp.presentation.SharedViewModel
 import com.laisd.moviesapp.presentation.moviedetails.adapter.CastMembersAdapter
@@ -51,7 +49,7 @@ class MovieDetailsFragment : Fragment() {
 
         sharedViewModel.favoriteMovies.observe(viewLifecycleOwner) {
             sharedViewModel.movieDetail.observe(viewLifecycleOwner) { movieDetail ->
-                setHeartIcon(args.movieId)
+                setHeartIcon(args.movieId, binding.ibMovieDetailFavorite)
                 setMovieInfo(movieDetail!!)
                 binding.rvCastMembers.adapter = CastMembersAdapter(movieDetail.cast)
             }
@@ -86,12 +84,27 @@ class MovieDetailsFragment : Fragment() {
         binding.tvMovieDetailPg.text = movieDetail.filmCertification
         binding.tvMovieDetailRuntime.text = movieDetail.runtime
         binding.tvMovieDetailSynopsis.text = movieDetail.synopsis
-        sharedViewModel.setBackdropPoster(this, movieDetail, binding.ivMovieDetailPoster)
+        setBackdropPoster(movieDetail, binding.ivMovieDetailPoster)
         binding.rvMovieDetailGenres.adapter = MovieGenresAdapter(movieDetail.genres)
     }
 
-    private fun setHeartIcon(movieId: Int) {
-        sharedViewModel.setHeartIcon(binding.ibMovieDetailFavorite, movieId)
+    private fun setHeartIcon(movieId: Int, imageButton: ImageButton) {
+        if (sharedViewModel.movieIsFavorite(movieId)) {
+            imageButton.setImageResource(R.drawable.ic_baseline_favorite_24)
+        } else {
+            imageButton.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+        }
+    }
+
+    private fun setBackdropPoster(movieDetail: MovieDetail, imageView: ImageView) {
+        val imageBaseUrl = "https://image.tmdb.org/t/p/w500/"
+        var pictureUrl: String? = null
+        movieDetail.backdropPoster?.let { pictureUrl = imageBaseUrl + it }
+        Glide.with(this)
+            .load(pictureUrl)
+            .fallback(R.drawable.ic_baseline_android_24)
+            .centerCrop()
+            .into(imageView)
     }
 
     private fun navigateToError() {
