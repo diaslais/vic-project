@@ -15,8 +15,8 @@ import com.laisd.moviesapp.domain.model.Genre
 import com.laisd.moviesapp.domain.model.Movie
 import com.laisd.moviesapp.domain.model.MovieDetail
 import com.laisd.moviesapp.domain.usecase.*
-import com.laisd.moviesapp.domain.usecase.base.SingleByIdUseCase
-import com.laisd.moviesapp.domain.usecase.base.SingleUseCase
+import com.laisd.moviesapp.domain.usecase.interfaces.MovieByIdUseCase
+import com.laisd.moviesapp.domain.usecase.interfaces.MovieUseCase
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -72,7 +72,7 @@ class SharedViewModel(
     }
 
     private fun getMovieList(
-        useCase: SingleUseCase<List<Movie>>,
+        useCase: MovieUseCase<List<Movie>>,
         movieList: MutableLiveData<List<Movie>>
     ) {
         useCase.execute()
@@ -101,7 +101,7 @@ class SharedViewModel(
 
     private fun getMovieDetail(
         movieId: Int,
-        useCase: SingleByIdUseCase<MovieDetail>,
+        useCase: MovieByIdUseCase<MovieDetail>,
         subscribeFunctionCallback: (movieDetail: MovieDetail) -> Unit
     ) {
         useCase.execute(movieId)
