@@ -6,6 +6,17 @@ An Android app that allows you to access information about movies and select you
 
 Project made during the Android development course ViC - Vitoria Code by Picpay.
 
+### How to run the app
+
+Register and get your (free) API key at [TMDb]. 
+Open the ```local.properties``` file and paste:
+
+```apiKey=insert your api key here```
+
+Then run the app :)
+
+[TMDb]: https://developers.themoviedb.org/3/
+
 ## Implementation
 
 - When opened, the app loads a list of the most popular movies
@@ -14,9 +25,22 @@ Project made during the Android development course ViC - Vitoria Code by Picpay.
 - User can search for a specific movie through search mode or filter the movie list by selecting a genre
 - Movies can be added to favorites and the user can access a list with of favorite movies
 
-![Movies](screenshots/favorites.png "Main screen with list of movies")
-![Movie Detail](screenshots/moviedetail.png "Details of a specific movie")
-![Search Mode](screenshots/searchmode.png "Search mode")
+<table>
+  <tr>
+    <td><img src="screenshots/favorites.png" width=220></td>
+    <td><img src="screenshots/searchmode.png" width=220></td>
+    <td><img src="screenshots/genrefilter.png" width=220></td>
+  </tr>
+ </table>
+
+ <table>
+  <tr>
+    <td><img src="screenshots/errornetwork.png" width=220></td>
+    <td><img src="screenshots/moviedetail.png" width=220></td>
+    <td><img src="screenshots/searchmode.gif" width=220></td>
+  </tr>
+ </table>
+
 
 ## Technical features
 
